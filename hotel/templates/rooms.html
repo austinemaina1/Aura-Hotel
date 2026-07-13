@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Aura Hotel | Rooms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="Aura Hotel Rooms and Suites">
+    <meta name="keywords" content="hotel, rooms, accommodation, aura hotel">
+    <meta name="author" content="Aura Hotel">
+
+    <link rel="stylesheet" type="text/css"
+        href="//fonts.googleapis.com/css?family=Roboto+Sans:400,700|Playfair+Display:400,700">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fancybox.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'fonts/ionicons/css/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome/css/font-awesome.min.css' %}">
+
+    <!-- Main Style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<header class="site-header js-site-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+
+            <div class="col-6 col-lg-4 site-logo" data-aos="fade">
+                <a href="{% url 'home' %}">Aura Hotel</a>
+            </div>
+
+            <div class="col-6 col-lg-8">
+
+                <div class="site-menu-toggle js-site-menu-toggle" data-aos="fade">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="site-navbar js-site-navbar">
+                    <nav role="navigation">
+                        <div class="container">
+                            <div class="row full-height align-items-center">
+                                <div class="col-md-6 mx-auto">
+
+                                    <ul class="list-unstyled menu">
+                                        <li><a href="{% url 'home' %}">Home</a></li>
+                                        <li class="active"><a href="{% url 'rooms' %}">Rooms</a></li>
+                                        <li><a href="{% url 'about' %}">About</a></li>
+                                        <li><a href="{% url 'events' %}">Events</a></li>
+                                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                                        <li><a href="{% url 'reservation' %}">Reservation</a></li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+<!-- END header -->
+
+<section class="site-hero inner-page overlay"
+         style="background-image: url('{% static "images/room1.png" %}');"
+         data-stellar-background-ratio="0.5">
+
+    <div class="container">
+        <div class="row site-hero-inner justify-content-center align-items-center">
+            <div class="col-md-10 text-center" data-aos="fade">
+
+                <h1 class="heading mb-3">Luxury Rooms & Suites</h1>
+
+                <ul class="custom-breadcrumbs mb-4">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li>&bullet;</li>
+                    <li>Rooms</li>
+                </ul>
+
+                <p class="text-white">
+                    Experience comfort, elegance, and modern hospitality in our
+                    carefully designed rooms and suites. Whether you're traveling
+                    for business or leisure, Aura Hotel provides the perfect stay.
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <a class="mouse smoothscroll" href="#next">
+        <div class="mouse-icon">
+            <span class="mouse-wheel"></span>
+        </div>
+    </a>
+
+</section>
+<!-- END section -->
+
+  <section class="section pb-4">
+  <div class="container">
+
+    <div class="row check-availabilty" id="next">
+      <div class="block-32" data-aos="fade-up" data-aos-offset="-200">
+
+        <form action="{% url 'reservation' %}">
+          <div class="row">
+
+            <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+              <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
+              <div class="field-icon-wrap">
+                <div class="icon"><span class="icon-calendar"></span></div>
+                <input type="text" id="checkin_date" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+              <label for="checkout_date" class="font-weight-bold text-black">Check Out</label>
+              <div class="field-icon-wrap">
+                <div class="icon"><span class="icon-calendar"></span></div>
+                <input type="text" id="checkout_date" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 mb-md-0 col-lg-3">
+              <div class="row">
+
+                <div class="col-md-6 mb-3 mb-md-0">
+                  <label for="adults" class="font-weight-bold text-black">Adults</label>
+                  <div class="field-icon-wrap">
+                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                    <select id="adults" class="form-control">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-3 mb-md-0">
+                  <label for="children" class="font-weight-bold text-black">Children</label>
+                  <div class="field-icon-wrap">
+                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                    <select id="children" class="form-control">
+                      <option>0</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3+</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 align-self-end">
+              <button class="btn btn-primary btn-block text-white">
+                Check Availability
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-md-8">
+        <h2 class="heading" data-aos="fade-up">Our Rooms & Suites</h2>
+        <p data-aos="fade-up">
+          Experience luxury, comfort, and exceptional hospitality at Aura Hotel.
+          Choose the perfect room for your business trip, family vacation, or romantic getaway.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <!-- Deluxe Room -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/room3.png' %}" alt="Deluxe Room" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Deluxe Room</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 8,500 / Night</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Executive Room -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/room2.png' %}" alt="Executive Room" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Executive Room</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 12,000 / Night</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Family Suite -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/room1.png' %}" alt="Family Suite" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Family Suite</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 18,000 / Night</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Balcony Suite -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/balconview.png' %}" alt="Balcony Suite" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Balcony Suite</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 20,000 / Night</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Pool View Suite -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/swimming_pool.png' %}" alt="Pool View Suite" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Pool View Suite</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 22,000 / Night</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Presidential Suite -->
+      <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+        <a href="{% url 'reservation' %}" class="room">
+          <figure class="img-wrap">
+            <img src="{% static 'images/room1.png' %}" alt="Presidential Suite" class="img-fluid mb-3">
+          </figure>
+          <div class="p-3 text-center room-info">
+            <h2>Presidential Suite</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 35,000 / Night</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+   <section class="section bg-light">
+
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-md-7">
+        <h2 class="heading" data-aos="fade">Special Room Offers</h2>
+        <p data-aos="fade">
+          Enjoy luxurious accommodation, exceptional hospitality, and modern amenities
+          at Aura Hotel. Choose the perfect room for your stay and experience comfort at its best.
+        </p>
+      </div>
+    </div>
+
+    <!-- Family Room Offer -->
+    <div class="site-block-half d-block d-lg-flex bg-white" data-aos="fade" data-aos-delay="100">
+      <a href="#" class="image d-block bg-image-2"
+         style="background-image: url('{% static 'images/room3.png' %}');"></a>
+
+      <div class="text">
+        <span class="d-block mb-4">
+          <span class="display-4 text-primary">KSh 12,000</span>
+          <span class="text-uppercase letter-spacing-2">/ per night</span>
+        </span>
+
+        <h2 class="mb-4">Family Room</h2>
+
+        <p>
+          Spacious accommodation designed for families, featuring comfortable beds,
+          modern furnishings, free Wi-Fi, air conditioning, and room service to
+          ensure a memorable stay.
+        </p>
+
+        <p>
+          <a href="{% url 'reservation' %}" class="btn btn-primary text-white">
+            Book Now
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Presidential Suite -->
+    <div class="site-block-half d-block d-lg-flex bg-white"
+         data-aos="fade"
+         data-aos-delay="200">
+
+      <a href="#" class="image d-block bg-image-2 order-2"
+         style="background-image: url('{% static 'images/room1.png' %}');"></a>
+
+      <div class="text order-1">
+        <span class="d-block mb-4">
+          <span class="display-4 text-primary">KSh 25,000</span>
+          <span class="text-uppercase letter-spacing-2">/ per night</span>
+        </span>
+
+        <h2 class="mb-4">Presidential Suite</h2>
+
+        <p>
+          Experience luxury at its finest with our Presidential Suite, offering
+          premium furnishings, a spacious lounge area, breathtaking views,
+          complimentary breakfast, and exclusive VIP services.
+        </p>
+
+        <p>
+          <a href="{% url 'reservation' %}" class="btn btn-primary text-white">
+            Book Now
+          </a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Call To Action -->
+<section class="section bg-image overlay"
+         style="background-image: url('{% static 'images/aurahotel.png' %}');">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-6 text-center mb-4 mb-md-0 text-md-left" data-aos="fade-up">
+        <h2 class="text-white font-weight-bold">
+          Experience Comfort, Luxury & Exceptional Hospitality
+        </h2>
+      </div>
+
+      <div class="col-12 col-md-6 text-center text-md-right"
+           data-aos="fade-up"
+           data-aos-delay="200">
+        <a href="{% url 'reservation' %}"
+           class="btn btn-outline-white-primary py-3 text-white px-5">
+          Reserve Now
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="section footer-section">
+  <div class="container">
+    <div class="row mb-4">
+
+      <div class="col-md-3 mb-5">
+        <h5 class="text-white mb-3">Quick Links</h5>
+        <ul class="list-unstyled link">
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="{% url 'rooms' %}">Rooms</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-3 mb-5">
+        <h5 class="text-white mb-3">Services</h5>
+        <ul class="list-unstyled link">
+          <li><a href="{% url 'rooms' %}">Rooms & Suites</a></li>
+          <li><a href="{% url 'about' %}">About Aura Hotel</a></li>
+          <li><a href="{% url 'contact' %}">Contact Us</a></li>
+          <li><a href="#">Restaurant</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-3 mb-5 pr-md-5 contact-info">
+        <p>
+          <span class="d-block">
+            <span class="ion-ios-location h5 mr-3 text-primary"></span>Address:
+          </span>
+          <span>Nairobi, Kenya</span>
+        </p>
+
+        <p>
+          <span class="d-block">
+            <span class="ion-ios-telephone h5 mr-3 text-primary"></span>Phone:
+          </span>
+          <span>+254 700 123 456</span>
+        </p>
+
+        <p>
+          <span class="d-block">
+            <span class="ion-ios-email h5 mr-3 text-primary"></span>Email:
+          </span>
+          <span>info@aurahotel.co.ke</span>
+        </p>
+      </div>
+
+      <div class="col-md-3 mb-5">
+        <h5 class="text-white mb-3">Newsletter</h5>
+        <p>Subscribe to receive updates and special offers.</p>
+
+        <form action="#" class="footer-newsletter">
+          <div class="form-group">
+            <input type="email" class="form-control" placeholder="Enter your email">
+            <button type="submit" class="btn">
+              <span class="fa fa-paper-plane"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="row pt-5">
+      <p class="col-md-6 text-left">
+        Copyright &copy;
+        <script>document.write(new Date().getFullYear());</script>
+        All Rights Reserved | Aura Hotel
+      </p>
+
+      <p class="col-md-6 text-right social">
+        <a href="#"><span class="fa fa-facebook"></span></a>
+        <a href="#"><span class="fa fa-twitter"></span></a>
+        <a href="#"><span class="fa fa-instagram"></span></a>
+        <a href="#"><span class="fa fa-linkedin"></span></a>
+      </p>
+    </div>
+  </div>
+</footer>
+    
+   <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+
+<script src="{% static 'js/aos.js' %}"></script>
+
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
