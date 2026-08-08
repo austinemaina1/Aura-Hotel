@@ -39,6 +39,49 @@
             </div>
 
             <div class="col-6 col-lg-8">
+<!-- Contact Info (appears when scrolling) -->
+<div class="header-contact">
+
+    <!-- Phone -->
+    <span class="phone">
+        <span class="fa fa-phone"></span>
+        +254 797 526 769
+    </span>
+
+    <!-- Social Media -->
+    <a href="#" class="social-link">
+        <span class="fa fa-facebook"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-instagram"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-twitter"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-linkedin"></span>
+    </a>
+
+    <!-- Book Now -->
+    <a href="{% url 'reservation' %}" class="book-now-btn">
+        Book Now
+    </a>
+
+    <!-- Dashboard -->
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-btn">
+        <span class="fa fa-shield"></span>
+        Staff Dashboard
+    </a>
+
+    <!-- Guest Login -->
+    <a href="{% url 'guest_login' %}" class="guest-login-btn">
+        Guest Login
+    </a>
+
+</div>
 
                 <div class="site-menu-toggle js-site-menu-toggle" data-aos="fade">
                     <span></span>
@@ -109,62 +152,71 @@
         <div class="row">
             <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
 
-                <form action="#" method="post"
-                    class="bg-white p-md-5 p-4 mb-5 border">
+<form method="POST"
+      action="{% url 'contact' %}"
+      class="bg-white p-md-5 p-4 mb-5 border">
 
-                    {% csrf_token %}
+    {% csrf_token %}
 
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text"
-                                id="name"
-                                class="form-control"
-                                placeholder="Enter your full name">
-                        </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="name">Full Name</label>
+            <input type="text"
+                id="name"
+                name="full_name"
+                class="form-control"
+                placeholder="Enter your full name"
+                required>
+        </div>
 
-                        <div class="col-md-6 form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="text"
-                                id="phone"
-                                class="form-control"
-                                placeholder="+254 7XX XXX XXX">
-                        </div>
-                    </div>
+        <div class="col-md-6 form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text"
+                id="phone"
+                name="phone_number"
+                class="form-control"
+                placeholder="+254 7XX XXX XXX"
+                required>
+        </div>
+    </div>
 
-                    <div class="row">
+    <div class="row">
 
-                        <div class="col-md-12 form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email"
-                                id="email"
-                                class="form-control"
-                                placeholder="Enter your email">
-                        </div>
-                    </div>
+        <div class="col-md-12 form-group">
+            <label for="email">Email Address</label>
+            <input type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="Enter your email"
+                required>
+        </div>
+    </div>
 
-                    <div class="row mb-4">
+    <div class="row mb-4">
 
-                        <div class="col-md-12 form-group">
-                            <label for="message">Your Message</label>
-                            <textarea
-                                name="message"
-                                id="message"
-                                class="form-control"
-                                cols="30"
-                                rows="8"
-                                placeholder="How can we help you?"></textarea>
-                        </div>
-                    </div>
+        <div class="col-md-12 form-group">
+            <label for="message">Your Message</label>
+            <textarea
+                name="message"
+                id="message"
+                class="form-control"
+                cols="30"
+                rows="8"
+                placeholder="How can we help you?"
+                required></textarea>
+        </div>
+    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <input type="submit"
-                                value="Send Message"
-                                class="btn btn-primary text-white font-weight-bold">
-                        </div>
-                    </div>
-                </form>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <input type="submit"
+                value="Send Message"
+                class="btn btn-primary text-white font-weight-bold">
+        </div>
+    </div>
+
+</form>
             </div>
 
 
@@ -427,7 +479,7 @@
               </span>
 
               <span>
-                +254 700 123 456
+                +254 797 526 769
               </span>
             </p>
 

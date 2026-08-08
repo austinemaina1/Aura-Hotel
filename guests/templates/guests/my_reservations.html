@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations | Aura Hotel</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background:#f5f7fb;">
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3 class="mb-0">
+                My Reservations
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                                {% if messages %}
+
+                    {% for message in messages %}
+
+                        <div class="alert alert-success">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+                            <th>Room Type</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Guests</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                <tbody>
+
+                {% for reservation in reservations %}
+
+                <tr>
+
+                    <td>
+                        {{ reservation.room_type }}
+                    </td>
+
+                    <td>
+                        {{ reservation.check_in }}
+                    </td>
+
+                    <td>
+                        {{ reservation.check_out }}
+                    </td>
+
+                    <td>
+                        {{ reservation.guests }}
+                    </td>
+
+                                <td>
+
+                                {% if reservation.check_in > today %}
+
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#cancelModal{{ reservation.id }}">
+
+                                    Cancel
+
+                                </button>
+
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Locked
+                                </span>
+
+                                {% endif %}
+
+                                </td>
+
+                </tr>
+
+                {% if reservation.check_in > today %}
+
+<div class="modal fade"
+     id="cancelModal{{ reservation.id }}"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Cancel Reservation
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+                    Are you sure you want to cancel your
+                    <strong>{{ reservation.room_type }}</strong>
+                    reservation?
+                </p>
+
+                <p class="text-danger mb-0">
+                    This action cannot be undone.
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Keep Reservation
+
+                </button>
+
+                <a href="{% url 'cancel_reservation' reservation.id %}"
+                   class="btn btn-danger">
+
+                    Yes, Cancel
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+
+                        No reservations found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

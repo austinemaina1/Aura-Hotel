@@ -42,6 +42,49 @@
             </div>
 
             <div class="col-6 col-lg-8">
+<!-- Contact Info (appears when scrolling) -->
+<div class="header-contact">
+
+    <!-- Phone -->
+    <span class="phone">
+        <span class="fa fa-phone"></span>
+        +254 797 526 769
+    </span>
+
+    <!-- Social Media -->
+    <a href="#" class="social-link">
+        <span class="fa fa-facebook"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-instagram"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-twitter"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-linkedin"></span>
+    </a>
+
+    <!-- Book Now -->
+    <a href="{% url 'reservation' %}" class="book-now-btn">
+        Book Now
+    </a>
+
+    <!-- Dashboard -->
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-btn">
+        <span class="fa fa-shield"></span>
+        Staff Dashboard
+    </a>
+
+    <!-- Guest Login -->
+    <a href="{% url 'guest_login' %}" class="guest-login-btn">
+        Guest Login
+    </a>
+
+</div>
 
                 <div class="site-menu-toggle js-site-menu-toggle" data-aos="fade">
                     <span></span>
@@ -206,7 +249,7 @@
           </figure>
           <div class="p-3 text-center room-info">
             <h2>Deluxe Room</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 8,500 / Night</span>
+            <span class="text-uppercase letter-spacing-1">KSh 9,500 / Night</span>
           </div>
         </a>
       </div>
@@ -215,11 +258,11 @@
       <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
         <a href="{% url 'reservation' %}" class="room">
           <figure class="img-wrap">
-            <img src="{% static 'images/room2.png' %}" alt="Executive Room" class="img-fluid mb-3">
+            <img src="{% static 'images/room2.png' %}" alt="Family Suite" class="img-fluid mb-3">
           </figure>
           <div class="p-3 text-center room-info">
-            <h2>Executive Room</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 12,000 / Night</span>
+            <h2>Family Suite</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 18,000 / Night</span>
           </div>
         </a>
       </div>
@@ -228,11 +271,11 @@
       <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
         <a href="{% url 'reservation' %}" class="room">
           <figure class="img-wrap">
-            <img src="{% static 'images/room1.png' %}" alt="Family Suite" class="img-fluid mb-3">
+            <img src="{% static 'images/room1.png' %}" alt="Executive Room" class="img-fluid mb-3">
           </figure>
           <div class="p-3 text-center room-info">
-            <h2>Family Suite</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 18,000 / Night</span>
+            <h2>Executive Room</h2>
+            <span class="text-uppercase letter-spacing-1">KSh 28,000 / Night</span>
           </div>
         </a>
       </div>
@@ -245,7 +288,7 @@
           </figure>
           <div class="p-3 text-center room-info">
             <h2>Balcony Suite</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 20,000 / Night</span>
+      
           </div>
         </a>
       </div>
@@ -258,7 +301,7 @@
           </figure>
           <div class="p-3 text-center room-info">
             <h2>Pool View Suite</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 22,000 / Night</span>
+           
           </div>
         </a>
       </div>
@@ -271,7 +314,7 @@
           </figure>
           <div class="p-3 text-center room-info">
             <h2>Presidential Suite</h2>
-            <span class="text-uppercase letter-spacing-1">KSh 35,000 / Night</span>
+            
           </div>
         </a>
       </div>
@@ -300,11 +343,11 @@
 
       <div class="text">
         <span class="d-block mb-4">
-          <span class="display-4 text-primary">KSh 12,000</span>
+          <span class="display-4 text-primary">KSh 18,000</span>
           <span class="text-uppercase letter-spacing-2">/ per night</span>
         </span>
 
-        <h2 class="mb-4">Family Room</h2>
+        <h2 class="mb-4">Family Suite</h2>
 
         <p>
           Spacious accommodation designed for families, featuring comfortable beds,
@@ -330,11 +373,11 @@
 
       <div class="text order-1">
         <span class="d-block mb-4">
-          <span class="display-4 text-primary">KSh 25,000</span>
+          <span class="display-4 text-primary">KSh 28,000</span>
           <span class="text-uppercase letter-spacing-2">/ per night</span>
         </span>
 
-        <h2 class="mb-4">Presidential Suite</h2>
+        <h2 class="mb-4">Executive Room</h2>
 
         <p>
           Experience luxury at its finest with our Presidential Suite, offering
@@ -413,7 +456,7 @@
           <span class="d-block">
             <span class="ion-ios-telephone h5 mr-3 text-primary"></span>Phone:
           </span>
-          <span>+254 700 123 456</span>
+          <span>+254 797 526 769</span>
         </p>
 
         <p>

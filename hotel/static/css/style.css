@@ -80,6 +80,10 @@ h1, h2, h3, h4, h5 {
 textarea.form-control {
   height: inherit; }
 
+.header-contact {
+    display: none;
+}
+
 .site-header {
   position: fixed;
   top: 0;
@@ -88,22 +92,33 @@ textarea.form-control {
   z-index: 2;
   -webkit-transition: .3s all ease-in-out;
   -o-transition: .3s all ease-in-out;
-  transition: .3s all ease-in-out; }
-  .site-header.scrolled {
-    padding: 20px 0;
-    background: #fff;
-    -webkit-box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.1); }
-    .site-header.scrolled .site-menu-toggle {
-      top: 10px;
-      position: relative; }
-      .site-header.scrolled .site-menu-toggle span {
-        background: #000; }
-    .site-header.scrolled .site-logo {
-      position: relative;
-      z-index: 100; }
-      .site-header.scrolled .site-logo a {
-        color: #000; }
+  transition: .3s all ease-in-out;
+}
+
+.site-header.scrolled {
+  padding: 20px 0;
+  background: #fff;
+  -webkit-box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.site-header.scrolled .site-menu-toggle {
+  top: 10px;
+  position: relative;
+}
+
+.site-header.scrolled .site-menu-toggle span {
+  background: #000;
+}
+
+.site-header.scrolled .site-logo {
+  position: relative;
+  z-index: 100;
+}
+
+.site-header.scrolled .site-logo a {
+  color: #000;
+}
 
 .menu-open {
   position: relative; }
@@ -140,35 +155,56 @@ textarea.form-control {
   border: 20px solid transparent;
   background: #fff;
   min-height: 300px;
-  overflow-y: scroll; }
-  .site-navbar nav {
-    text-align: left; }
-    .site-navbar nav .menu {
-      font-family: "Playfair Display", times, serif; }
-      .site-navbar nav .menu li a {
-        color: #000;
-        font-size: 40px;
-        padding: 5px 10px;
-        position: relative; }
-        .site-navbar nav .menu li a:hover:before {
-          width: 100%; }
-      .site-navbar nav .menu li.active a {
-        color: #ffba5a; }
-        .site-navbar nav .menu li.active a:before {
-          width: 100%; }
-  .site-navbar .extra-info a {
-    color: #000; }
-  .site-navbar .extra-info ul li a {
-    color: #000; }
-  .site-navbar .extra-info h3 {
-    font-family: "Roboto", arial, sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: .2em;
-    color: #adb5bd;
-    margin-bottom: 30px; }
-  .site-navbar .extra-info p {
-    color: #212529; }
+  overflow-y: scroll;
+}
+
+.site-navbar nav {
+  text-align: left;
+}
+
+.site-navbar nav .menu {
+  font-family: "Playfair Display", times, serif;
+}
+
+.site-navbar nav .menu li a {
+  color: #000;
+  font-size: 40px;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.site-navbar nav .menu li a:hover:before {
+  width: 100%;
+}
+
+.site-navbar nav .menu li.active a {
+  color: #ffba5a;
+}
+
+.site-navbar nav .menu li.active a:before {
+  width: 100%;
+}
+
+.site-navbar .extra-info a {
+  color: #000;
+}
+
+.site-navbar .extra-info ul li a {
+  color: #000;
+}
+
+.site-navbar .extra-info h3 {
+  font-family: "Roboto", arial, sans-serif;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: .2em;
+  color: #adb5bd;
+  margin-bottom: 30px;
+}
+
+.site-navbar .extra-info p {
+  color: #212529;
+}
 
 .full-height {
   height: 100vh;
@@ -1269,3 +1305,149 @@ textarea.form-control {
         background: #ffba5a;
         color: #fff;
         border-radius: 50%; }
+        /* Hidden before scrolling */
+.header-contact {
+    display: none;
+}
+
+/* ==========================
+   HEADER CONTACT SECTION
+========================== */
+
+.site-header.scrolled .header-contact{
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    position:absolute;
+    top:50%;
+    right:120px;
+
+    transform:translateY(-50%);
+    white-space:nowrap;
+
+    z-index:100;
+}
+
+/* ==========================
+   PHONE
+========================== */
+
+.site-header.scrolled .header-contact .phone{
+    color:#000;
+    font-size:16px;
+    font-weight:500;
+    white-space:nowrap;
+}
+
+.phone .fa{
+    margin-right:6px;
+}
+
+/* ==========================
+   SOCIAL ICONS
+========================== */
+
+.social-link{
+    color:#000 !important;
+    font-size:20px;
+    text-decoration:none;
+    transition:0.3s ease;
+}
+
+.social-link:hover{
+    color:#d4a15d !important;
+}
+
+/* ==========================
+   BOOK NOW BUTTON
+========================== */
+
+.book-now-btn{
+    background:#d4a15d;
+    color:#fff !important;
+
+    padding:12px 24px;
+    border-radius:40px;
+
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+
+    transition:0.3s ease;
+}
+
+.book-now-btn:hover{
+    background:#c79343;
+    color:#fff !important;
+    transform:translateY(-2px);
+}
+
+/* ==========================
+   DASHBOARD BUTTON
+========================== */
+
+.dashboard-btn{
+    background:#1f2937;
+    color:#fff !important;
+
+    padding:12px 24px;
+    border-radius:40px;
+
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    transition:0.3s ease;
+}
+
+.dashboard-btn:hover{
+    background:#374151;
+    color:#fff !important;
+    transform:translateY(-2px);
+}
+
+/* ==========================
+   GUEST LOGIN BUTTON
+========================== */
+
+.guest-login-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    height:56px;
+    padding:0 28px;
+
+    border:2px solid #d4a15d;
+    border-radius:40px;
+
+    color:#d4a15d !important;
+    font-weight:600;
+}
+
+.guest-login-btn:hover{
+    background:#d4a15d;
+    color:#fff !important;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width:1200px){
+
+    .site-header.scrolled .header-contact{
+        gap:12px;
+        right:90px;
+    }
+
+    .phone{
+        display:none;
+    }
+
+}
