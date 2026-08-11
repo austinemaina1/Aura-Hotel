@@ -17,4 +17,14 @@ urlpatterns = [
         views.make_payment,
         name='make_payment'
     ),
+
+    path('mpesa-payment/<int:reservation_id>/', views.make_mpesa_payment, name='make_mpesa_payment'),
+
+    path('mpesa-callback/', views.mpesa_callback, name='mpesa_callback'),
+
+    path(
+    'receipt/<int:payment_id>/',
+    views.payment_receipt,
+    name='payment_receipt'
+    ),
 ]

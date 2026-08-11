@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aura Hotel — Guest Support</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg-color:#f5f7fb;
+    --text-color:#212529;
+    --text-muted:#6c757d;
+    --card-bg:#ffffff;
+    --card-shadow:rgba(0,0,0,.08);
+    --border-color:#dee2e6;
+    --sidebar-bg:#1e293b;
+    --sidebar-hover:#334155;
+    --sidebar-text:#ffffff;
+    --input-bg:#ffffff;
+    --chat-bubble-bot:#eef1f6;
+    --chat-bubble-user:#0d6efd;
+    --chat-bubble-user-text:#ffffff;
+}
+
+[data-theme="dark"]{
+    --bg-color:#0f1115;
+    --text-color:#e8e8e8;
+    --text-muted:#a0a0a0;
+    --card-bg:#1a1d24;
+    --card-shadow:rgba(0,0,0,.4);
+    --border-color:#2d323c;
+    --sidebar-bg:#14161c;
+    --sidebar-hover:#20242e;
+    --sidebar-text:#e8e8e8;
+    --input-bg:#20242e;
+    --chat-bubble-bot:#20242e;
+    --chat-bubble-user:#0d6efd;
+    --chat-bubble-user-text:#ffffff;
+}
+
+body{
+    background:var(--bg-color);
+    color:var(--text-color);
+    font-family:'Segoe UI',sans-serif;
+    transition:background-color .3s ease, color .3s ease;
+}
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:var(--sidebar-bg);
+    color:var(--sidebar-text);
+    position:fixed;
+    top:0;
+    left:0;
+    overflow-y:auto;
+    z-index:1000;
+    transition:background-color .3s ease;
+}
+
+.sidebar-header{
+    text-align:center;
+    padding:25px 15px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar-menu{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar-menu a{
+    display:block;
+    color:var(--sidebar-text);
+    text-decoration:none;
+    padding:15px 25px;
+    transition:background-color .2s ease;
+}
+
+.sidebar-menu a:hover{
+    background:var(--sidebar-hover);
+}
+
+.sidebar-menu a.active{
+    background:var(--sidebar-hover);
+    border-left:3px solid #0d6efd;
+}
+
+.main-content{
+    margin-left:260px;
+    padding:25px;
+}
+
+.card-support{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 3px 12px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    transition:background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+
+#themeToggle{
+    width:46px;
+    height:46px;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    transition:background-color .3s ease, border-color .3s ease;
+}
+
+/* ---------- FAQ Accordion ---------- */
+.accordion-item{
+    background:var(--card-bg);
+    border-color:var(--border-color);
+    color:var(--text-color);
+}
+
+.accordion-button{
+    background:var(--card-bg);
+    color:var(--text-color);
+    font-weight:600;
+}
+
+.accordion-button:not(.collapsed){
+    background:var(--card-bg);
+    color:#0d6efd;
+    box-shadow:none;
+}
+
+.accordion-button::after{
+    filter:var(--accordion-icon-filter, none);
+}
+
+[data-theme="dark"] .accordion-button::after{
+    filter:invert(1) grayscale(100%) brightness(1.8);
+}
+
+.accordion-body{
+    color:var(--text-muted);
+}
+
+.accordion-button:focus{
+    box-shadow:none;
+    border-color:var(--border-color);
+}
+
+/* ---------- Support Option Cards ---------- */
+.support-option{
+    border:1px solid var(--border-color);
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    background:var(--card-bg);
+    height:100%;
+}
+
+.support-option:hover{
+    transform:translateY(-3px);
+    box-shadow:0 6px 16px var(--card-shadow);
+}
+
+.support-option i{
+    font-size:1.8rem;
+    margin-bottom:10px;
+}
+
+/* ---------- SOS Button ---------- */
+#sosButton{
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    padding:12px 24px;
+    font-weight:700;
+    letter-spacing:.5px;
+    box-shadow:0 4px 14px rgba(220,53,69,.45);
+    animation:sosPulse 2s infinite;
+}
+
+#sosButton:hover{
+    background:#bb2d3b;
+    color:#fff;
+}
+
+@keyframes sosPulse{
+    0%   { box-shadow:0 0 0 0 rgba(220,53,69,.55); }
+    70%  { box-shadow:0 0 0 14px rgba(220,53,69,0); }
+    100% { box-shadow:0 0 0 0 rgba(220,53,69,0); }
+}
+
+.emergency-contact{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border-color);
+}
+
+.emergency-contact:last-child{
+    border-bottom:none;
+}
+
+/* ---------- Floating Chat Widget ---------- */
+#chatLauncher{
+    position:fixed;
+    bottom:28px;
+    right:28px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    border:none;
+    box-shadow:0 6px 18px rgba(13,110,253,.45);
+    z-index:1050;
+    font-size:1.4rem;
+}
+
+#chatWindow{
+    position:fixed;
+    bottom:100px;
+    right:28px;
+    width:340px;
+    max-height:460px;
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:0 10px 30px var(--card-shadow);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:1050;
+    border:1px solid var(--border-color);
+}
+
+#chatWindow.open{
+    display:flex;
+}
+
+.chat-header{
+    background:#0d6efd;
+    color:#fff;
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.chat-body{
+    flex:1;
+    padding:14px;
+    overflow-y:auto;
+    max-height:300px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.chat-msg{
+    max-width:80%;
+    padding:9px 13px;
+    border-radius:14px;
+    font-size:.9rem;
+    line-height:1.35;
+}
+
+.chat-msg.bot{
+    background:var(--chat-bubble-bot);
+    color:var(--text-color);
+    align-self:flex-start;
+    border-bottom-left-radius:4px;
+}
+
+.chat-msg.user{
+    background:var(--chat-bubble-user);
+    color:var(--chat-bubble-user-text);
+    align-self:flex-end;
+    border-bottom-right-radius:4px;
+}
+
+.chat-input-area{
+    display:flex;
+    border-top:1px solid var(--border-color);
+    padding:10px;
+    gap:8px;
+}
+
+.chat-input-area input{
+    flex:1;
+    border:1px solid var(--border-color);
+    background:var(--input-bg);
+    color:var(--text-color);
+    border-radius:20px;
+    padding:8px 14px;
+    font-size:.9rem;
+    outline:none;
+}
+
+.chat-input-area button{
+    background:#0d6efd;
+    border:none;
+    color:#fff;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+.chat-quick-replies{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:0 14px 12px;
+}
+
+.chat-quick-replies button{
+    font-size:.78rem;
+    border:1px solid var(--border-color);
+    background:transparent;
+    color:var(--text-color);
+    border-radius:14px;
+    padding:5px 10px;
+}
+
+.chat-quick-replies button:hover{
+    background:var(--chat-bubble-bot);
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+
+    <h4 class="mb-1">
+        Aura Hotel
+    </h4>
+
+    <small class="d-block mb-4">
+        Guest Portal
+    </small>
+
+    <div class="text-center">
+
+        {% if profile.profile_picture %}
+
+            <img src="{{ profile.profile_picture.url }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110"
+                 style="object-fit:cover; border:3px solid rgba(255,255,255,.25);">
+
+        {% else %}
+
+            <img src="https://ui-avatars.com/api/?name={{ request.user.username }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110">
+
+        {% endif %}
+
+        <h5 class="mb-1">
+            {{ request.user.username }}
+        </h5>
+
+        <small class="text-light d-block">
+            {{ request.user.email }}
+        </small>
+
+        <span class="badge bg-success mt-2">
+            Active Guest
+        </span>
+
+    </div>
+
+</div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="{% url 'guest_dashboard' %}">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_profile' %}">
+                <i class="fas fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_reservations' %}">
+                <i class="fas fa-calendar-check"></i>
+                My Reservations
+            </a>
+        </li>
+
+        <li>
+            <a href="/reservation/">
+                <i class="fas fa-bed"></i>
+                Book Room
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_invoices' %}">
+                <i class="fas fa-file-invoice-dollar"></i>
+                My Invoices
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'leave_review' %}">
+                <i class="fas fa-star"></i>
+                Leave Review
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_support' %}" class="active">
+                <i class="fas fa-life-ring"></i>
+                Support
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'logout' %}"
+            class="nav-link text-danger">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main-content">
+
+    <div class="mb-4 d-flex justify-content-between align-items-start flex-wrap gap-3">
+
+        <div>
+            <h2>
+                Support Center
+            </h2>
+
+            <p class="text-muted">
+                Get help, chat with us, or reach emergency assistance.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center gap-3" id="sos">
+
+            <!-- SOS Button -->
+            <button id="sosButton" data-bs-toggle="modal" data-bs-target="#sosModal">
+                <i class="fas fa-triangle-exclamation me-2"></i>SOS
+            </button>
+
+            <!-- Dark / Light Mode Toggle -->
+            <button class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                    id="themeToggle"
+                    title="Toggle dark/light mode">
+
+                <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     style="color:#FFA500; display:none;" viewBox="0 0 16 16">
+                    <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707L4.464 3.757a.5.5 0 0 1 0 .708z"/>
+                </svg>
+
+                <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     style="color:#4B4B4B;" viewBox="0 0 16 16">
+                    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Quick Support Options -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="support-option" onclick="document.getElementById('faqSection').scrollIntoView({behavior:'smooth'});">
+                <i class="fas fa-circle-question text-primary"></i>
+                <h6 class="mb-1">FAQ / Help Center</h6>
+                <small class="text-muted">Answers to common questions</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="support-option" onclick="openChat();">
+                <i class="fas fa-comments text-success"></i>
+                <h6 class="mb-1">Live Chat</h6>
+                <small class="text-muted">Chat with us or our assistant</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="support-option" data-bs-toggle="modal" data-bs-target="#sosModal">
+                <i class="fas fa-triangle-exclamation text-danger"></i>
+                <h6 class="mb-1">Emergency / SOS</h6>
+                <small class="text-muted">Immediate assistance</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="card card-support" id="faqSection">
+
+        <div class="card-body">
+
+            <h5 class="mb-4">
+                <i class="fas fa-circle-question text-primary me-2"></i>
+                Frequently Asked Questions
+            </h5>
+
+            <div class="accordion" id="faqAccordion">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What time is check-in and check-out?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Check-in is from 2:00 PM and check-out is by 11:00 AM. Early check-in or late check-out
+                            can be requested via the front desk or live chat, subject to availability.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How do I cancel or modify a reservation?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Go to <strong>My Reservations</strong>, select the booking you'd like to change, and
+                            choose Modify or Cancel. Free cancellation is available up to 24 hours before check-in.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What payment methods are accepted?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We accept all major credit/debit cards, mobile money, and online bank transfers.
+                            You can pay directly from the <strong>My Invoices</strong> page.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Is Wi-Fi included in my stay?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, complimentary high-speed Wi-Fi is available throughout the hotel for all guests
+                            at no additional charge.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            How do I request housekeeping or room service?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can request housekeeping or room service anytime through the Live Chat, or by
+                            dialing extension 0 from your in-room phone.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            Who do I contact in an emergency?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Use the red <strong>SOS</strong> button at the top of this page for immediate access
+                            to security, medical, and front desk emergency lines.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============ SOS / Emergency Modal ============ -->
+<div class="modal fade" id="sosModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background:var(--card-bg); color:var(--text-color); border-radius:16px;">
+
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger">
+                    <i class="fas fa-triangle-exclamation me-2"></i>
+                    Emergency Assistance
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <p class="text-muted mb-3">
+                    If this is a life-threatening emergency, call local emergency services immediately.
+                </p>
+
+                <div class="emergency-contact">
+                    <div>
+                        <strong>Local Emergency Services</strong>
+                        <div class="text-muted small">Police / Ambulance / Fire</div>
+                    </div>
+                    <a href="tel:999" class="btn btn-danger btn-sm rounded-pill">
+                        <i class="fas fa-phone me-1"></i> 999
+                    </a>
+                </div>
+
+                <div class="emergency-contact">
+                    <div>
+                        <strong>Hotel Security</strong>
+                        <div class="text-muted small">On-site, 24/7</div>
+                    </div>
+                    <a href="tel:+254700000001" class="btn btn-outline-danger btn-sm rounded-pill">
+                        <i class="fas fa-phone me-1"></i> Call
+                    </a>
+                </div>
+
+                <div class="emergency-contact">
+                    <div>
+                        <strong>Front Desk</strong>
+                        <div class="text-muted small">General assistance</div>
+                    </div>
+                    <a href="tel:+254700000002" class="btn btn-outline-primary btn-sm rounded-pill">
+                        <i class="fas fa-phone me-1"></i> Call
+                    </a>
+                </div>
+
+                <div class="emergency-contact">
+                    <div>
+                        <strong>Medical / Nurse On-Call</strong>
+                        <div class="text-muted small">Available 24/7</div>
+                    </div>
+                    <a href="tel:+254700000003" class="btn btn-outline-success btn-sm rounded-pill">
+                        <i class="fas fa-phone me-1"></i> Call
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="modal-footer border-0">
+                <small class="text-muted">Your room number and location will be shared automatically when you call from the app.</small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ============ Floating Chat Widget ============ -->
+<button id="chatLauncher" onclick="toggleChat();">
+    <i class="fas fa-comments"></i>
+</button>
+
+<div id="chatWindow">
+
+    <div class="chat-header">
+        <div>
+            <strong>Aura Assistant</strong>
+            <div style="font-size:.75rem; opacity:.85;">
+                <span class="d-inline-block rounded-circle bg-success" style="width:8px;height:8px;"></span>
+                Online
+            </div>
+        </div>
+        <button class="btn-close btn-close-white" onclick="toggleChat();"></button>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg bot">
+            Hi {{ request.user.username }}! 👋 I'm the Aura Assistant. How can I help you today?
+        </div>
+    </div>
+
+    <div class="chat-quick-replies">
+        <button onclick="sendQuickReply('Check-in time?')">Check-in time?</button>
+        <button onclick="sendQuickReply('Request housekeeping')">Housekeeping</button>
+        <button onclick="sendQuickReply('Talk to a human')">Talk to a human</button>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage();}">
+        <button onclick="sendMessage();"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ---------- Theme Toggle ---------- */
+(function() {
+    const toggleBtn = document.getElementById('themeToggle');
+    const iconSun = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    applyTheme(initialTheme);
+
+    toggleBtn.addEventListener('click', function() {
+        const currentTheme = root.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            iconSun.style.display = 'block';
+            iconMoon.style.display = 'none';
+        } else {
+            root.removeAttribute('data-theme');
+            iconSun.style.display = 'none';
+            iconMoon.style.display = 'block';
+        }
+    }
+})();
+
+/* ---------- Auto-open SOS modal if linked from #sos ---------- */
+if (window.location.hash === '#sos') {
+    window.addEventListener('DOMContentLoaded', function() {
+        const sosModal = new bootstrap.Modal(document.getElementById('sosModal'));
+        sosModal.show();
+    });
+}
+
+/* ---------- Chat Widget ---------- */
+function toggleChat() {
+    document.getElementById('chatWindow').classList.toggle('open');
+}
+
+function openChat() {
+    document.getElementById('chatWindow').classList.add('open');
+}
+
+function appendMessage(text, sender) {
+    const body = document.getElementById('chatBody');
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg ' + sender;
+    msg.textContent = text;
+    body.appendChild(msg);
+    body.scrollTop = body.scrollHeight;
+}
+
+function botReply(userText) {
+    // Placeholder logic — replace with a real fetch() call to your
+    // chatbot/support backend (e.g. POST /api/support/chat/).
+    let reply = "Thanks for your message! A member of our team will follow up shortly.";
+
+    const lower = userText.toLowerCase();
+    if (lower.includes('check-in')) {
+        reply = "Check-in starts at 2:00 PM. Need an early check-in? I can flag that for the front desk.";
+    } else if (lower.includes('housekeeping')) {
+        reply = "Got it — I've sent a housekeeping request to your room. They'll be with you shortly.";
+    } else if (lower.includes('human')) {
+        reply = "Connecting you to a front desk agent now — please stay in this chat.";
+    }
+
+    setTimeout(() => appendMessage(reply, 'bot'), 500);
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    appendMessage(text, 'user');
+    input.value = '';
+    botReply(text);
+}
+
+function sendQuickReply(text) {
+    appendMessage(text, 'user');
+    botReply(text);
+}
+</script>
+
+</body>
+</html>

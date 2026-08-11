@@ -10,6 +10,9 @@ class ReservationForm(forms.ModelForm):
         exclude = [
             'user',
             'room',
-            'check_in',
-            'check_out'
+            'check_in_time',
+            'check_out_time',
+            'status',
+            'payment_status',
         ]
+

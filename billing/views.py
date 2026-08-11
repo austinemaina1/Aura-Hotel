@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from notifications.utils import create_notification
 from .models import Invoice
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
@@ -688,4 +690,61 @@ def invoice_detail(request, invoice_id):
         request,
         'billing/invoice_detail.html',
         context
+    )
+
+from .forms import InvoiceItemForm
+from .models import Invoice, InvoiceItem
+
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404
+)
+
+def add_invoice_item(request, invoice_id):
+
+    invoice = get_object_or_404(
+        Invoice,
+        id=invoice_id
+    )
+
+    if request.method == "POST":
+
+        form = InvoiceItemForm(
+            request.POST
+        )
+
+        if form.is_valid():
+
+            item = form.save(
+                commit=False
+            )
+
+            item.invoice = invoice
+
+            item.save()
+
+            invoice.update_total()
+
+            create_notification(
+    "Invoice Updated",
+    f"{item.description} charge added to Invoice #{invoice.id}"
+)
+
+            return redirect(
+                'invoice_detail',
+                invoice.id
+            )
+
+    else:
+
+        form = InvoiceItemForm()
+
+    return render(
+        request,
+        'billing/add_invoice_item.html',
+        {
+            'form': form,
+            'invoice': invoice
+        }
     )

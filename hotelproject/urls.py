@@ -33,6 +33,7 @@ urlpatterns = [
     path('guests/', include('guests.urls')),
     path('records/', include('records.urls')),
     path('billing/', include('billing.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
 
 if settings.DEBUG:

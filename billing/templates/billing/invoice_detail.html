@@ -316,54 +316,158 @@
     <hr>
 
     <!-- Charges -->
+<div class="no-print">
 
-    <table class="table table-bordered">
+    <a href="{% url 'add_invoice_item' invoice.id %}"
+       class="btn btn-primary">
 
-        <thead class="table-light">
+        <i class="bi bi-plus-circle"></i>
+        Add Charge
+
+    </a>
+
+</div>
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
 
         <tr>
+
             <th>Description</th>
-            <th class="text-end">Amount</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+
         </tr>
 
-        </thead>
+    </thead>
 
-        <tbody>
+    <tbody>
 
         <tr>
 
-            <td>
-                Room Charge ({{ invoice.nights }} Nights)
-            </td>
-
-            <td class="text-end">
-                KSh {{ invoice.room_charge }}
-            </td>
+            <td>Room Charge</td>
+            <td>{{ invoice.nights }}</td>
+            <td>KSh {{ invoice.room_rate }}</td>
+            <td>KSh {{ invoice.room_charge }}</td>
 
         </tr>
+
+        {% for item in invoice.items.all %}
 
         <tr>
 
-            <td>
-                Extra Charges
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>KSh {{ item.unit_price }}</td>
+            <td>KSh {{ item.total_price }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+    <tfoot>
+
+        <tr class="table-success fw-bold">
+
+            <td colspan="3" class="text-end">
+
+                Grand Total
+
             </td>
 
-            <td class="text-end">
-                KSh {{ invoice.extra_charges }}
+            <td>
+
+                KSh {{ invoice.total_amount|floatformat:2 }}
+
             </td>
 
         </tr>
 
-        </tbody>
+    </tfoot>
 
-    </table>
+</table>
 
-    <div class="total-box">
+<div class="row align-items-center">
 
-        Total:
-        KSh {{ invoice.total_amount }}
+    <div class="col-md-4">
+
+        <h4 class="fw-bold mb-0">
+            Total: KSh {{ invoice.total_amount }}
+        </h4>
 
     </div>
+
+    {% if invoice.status == 'Pending' %}
+
+    <div class="col-md-8 no-print">
+
+        <form method="POST"
+              action="{% url 'make_mpesa_payment' invoice.reservation.id %}">
+
+            {% csrf_token %}
+
+            <div class="row g-2">
+
+                <div class="col-md-5">
+
+                    <input type="text"
+                           name="phone_number"
+                           class="form-control"
+                           placeholder="254712345678"
+                           required>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-success w-100">
+
+                        <i class="bi bi-phone"></i>
+                        M-Pesa
+
+                    </button>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <a href="{% url 'make_payment' invoice.reservation.id %}"
+                       class="btn btn-primary w-100">
+
+                        <i class="bi bi-credit-card-fill"></i>
+                        Pay Now
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    {% else %}
+
+    <div class="col-md-8 text-end">
+
+        <span class="badge bg-success p-2">
+
+            <i class="bi bi-check-circle-fill"></i>
+            Paid
+
+        </span>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
 
     <hr>
 

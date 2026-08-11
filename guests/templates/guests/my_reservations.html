@@ -1,45 +1,433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Reservations | Aura Hotel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>My Reservations | Aura Hotel</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg-color:#f5f7fb;
+    --text-color:#212529;
+    --text-muted:#6c757d;
+    --card-bg:#ffffff;
+    --card-shadow:rgba(0,0,0,.08);
+    --border-color:#dee2e6;
+    --sidebar-bg:#1e293b;
+    --sidebar-hover:#334155;
+    --sidebar-text:#ffffff;
+    --table-hover:rgba(0,0,0,.03);
+    --table-header-bg:#ffffff;
+    --field-bg:#f8f9fb;
+}
+
+[data-theme="dark"]{
+    --bg-color:#0f1115;
+    --text-color:#e8e8e8;
+    --text-muted:#a0a0a0;
+    --card-bg:#1a1d24;
+    --card-shadow:rgba(0,0,0,.4);
+    --border-color:#2d323c;
+    --sidebar-bg:#14161c;
+    --sidebar-hover:#20242e;
+    --sidebar-text:#e8e8e8;
+    --table-hover:rgba(255,255,255,.04);
+    --table-header-bg:#1a1d24;
+    --field-bg:#20242e;
+}
+
+body{
+    background:var(--bg-color);
+    color:var(--text-color);
+    font-family:'Segoe UI',sans-serif;
+    transition:background-color .3s ease, color .3s ease;
+}
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:var(--sidebar-bg);
+    color:var(--sidebar-text);
+    position:fixed;
+    top:0;
+    left:0;
+    overflow-y:auto;
+    z-index:1000;
+    transition:background-color .3s ease;
+}
+
+.sidebar-header{
+    text-align:center;
+    padding:25px 15px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar-menu{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar-menu a{
+    display:block;
+    color:var(--sidebar-text);
+    text-decoration:none;
+    padding:15px 25px;
+    transition:background-color .2s ease;
+}
+
+.sidebar-menu a:hover{
+    background:var(--sidebar-hover);
+}
+
+.sidebar-menu a.active{
+    background:var(--sidebar-hover);
+    border-left:3px solid #0d6efd;
+}
+
+.main-content{
+    margin-left:260px;
+    padding:25px;
+}
+
+#themeToggle{
+    width:46px;
+    height:46px;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    transition:background-color .3s ease, border-color .3s ease;
+}
+
+/* ---------- Cards & Table ---------- */
+.card-support{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 3px 12px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    transition:background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+
+.card-header-clean{
+    background:var(--card-bg);
+    border-bottom:1px solid var(--border-color);
+    padding:20px 24px;
+    border-radius:15px 15px 0 0;
+}
+
+.table{
+    --bs-table-color: var(--text-color);
+    --bs-table-bg: transparent;
+    --bs-table-striped-color: var(--text-color);
+    --bs-table-striped-bg: var(--table-hover);
+    --bs-table-active-color: var(--text-color);
+    --bs-table-active-bg: var(--table-hover);
+    --bs-table-hover-color: var(--text-color);
+    --bs-table-hover-bg: var(--table-hover);
+    --bs-table-border-color: var(--border-color);
+    color:var(--text-color);
+    margin-bottom:0;
+}
+
+.table thead{
+    background:var(--table-header-bg);
+    color:var(--text-muted);
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.table > :not(caption) > * > *{
+    color:var(--text-color);
+    border-bottom-color:var(--border-color);
+    background-color:transparent;
+    vertical-align:middle;
+    padding:16px;
+}
+
+.room-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(13,110,253,.1);
+    color:#0d6efd;
+    flex-shrink:0;
+}
+
+/* ---------- Modal (dark-aware) ---------- */
+.modal-content{
+    background:var(--card-bg);
+    color:var(--text-color);
+    border-radius:16px;
+    border:none;
+}
+
+.modal-header, .modal-footer{
+    border-color:var(--border-color);
+}
+
+/* ---------- Stat pills at top ---------- */
+.stat-pill{
+    background:var(--field-bg);
+    border-radius:12px;
+    padding:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.stat-pill .icon{
+    width:44px;
+    height:44px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.1rem;
+    flex-shrink:0;
+}
+
+.empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--text-muted);
+}
+
+.empty-state i{
+    font-size:2.4rem;
+    margin-bottom:14px;
+    opacity:.5;
+}
+
+</style>
+
 </head>
-<body style="background:#f5f7fb;">
+<body>
 
-<div class="container mt-5">
+<div class="sidebar">
 
-    <div class="card shadow border-0">
+<div class="sidebar-header">
 
-        <div class="card-header bg-primary text-white">
+    <h4 class="mb-1">
+        Aura Hotel
+    </h4>
 
-            <h3 class="mb-0">
+    <small class="d-block mb-4">
+        Guest Portal
+    </small>
+
+    <div class="text-center">
+
+        {% if profile.profile_picture %}
+
+            <img src="{{ profile.profile_picture.url }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110"
+                 style="object-fit:cover; border:3px solid rgba(255,255,255,.25);">
+
+        {% else %}
+
+            <img src="https://ui-avatars.com/api/?name={{ request.user.username }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110">
+
+        {% endif %}
+
+        <h5 class="mb-1">
+            {{ request.user.username }}
+        </h5>
+
+        <small class="text-light d-block">
+            {{ request.user.email }}
+        </small>
+
+        <span class="badge bg-success mt-2">
+            Active Guest
+        </span>
+
+    </div>
+
+</div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="{% url 'guest_dashboard' %}">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_profile' %}">
+                <i class="fas fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_reservations' %}" class="active">
+                <i class="fas fa-calendar-check"></i>
                 My Reservations
-            </h3>
+            </a>
+        </li>
 
+        <li>
+            <a href="/reservation/">
+                <i class="fas fa-bed"></i>
+                Book Room
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_invoices' %}">
+                <i class="fas fa-file-invoice-dollar"></i>
+                My Invoices
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'leave_review' %}">
+                <i class="fas fa-star"></i>
+                Leave Review
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_support' %}">
+                <i class="fas fa-life-ring"></i>
+                Support
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'logout' %}"
+            class="nav-link text-danger">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main-content">
+
+    <div class="mb-4 d-flex justify-content-between align-items-start flex-wrap gap-3">
+
+        <div>
+            <h2>
+                My Reservations
+            </h2>
+
+            <p class="text-muted">
+                View, track, and manage your hotel bookings.
+            </p>
         </div>
 
-        <div class="card-body">
+        <!-- Dark / Light Mode Toggle -->
+        <button class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                id="themeToggle"
+                title="Toggle dark/light mode">
+
+            <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 style="color:#FFA500; display:none;" viewBox="0 0 16 16">
+                <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707L4.464 3.757a.5.5 0 0 1 0 .708z"/>
+            </svg>
+
+            <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 style="color:#4B4B4B;" viewBox="0 0 16 16">
+                <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+            </svg>
+
+        </button>
+
+    </div>
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-circle-check me-2"></i>{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <!-- Quick stats -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="stat-pill">
+                <div class="icon" style="background:rgba(13,110,253,.1); color:#0d6efd;">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0">{{ reservations|length }}</h5>
+                    <small class="text-muted">Total Reservations</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-pill">
+                <div class="icon" style="background:rgba(25,135,84,.1); color:#198754;">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0" id="upcomingCount">—</h5>
+                    <small class="text-muted">Upcoming</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-pill">
+                <div class="icon" style="background:rgba(108,117,125,.15); color:#6c757d;">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0" id="lockedCount">—</h5>
+                    <small class="text-muted">Locked / Past</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card card-support">
+
+        <div class="card-header-clean d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-list-ul text-primary me-2"></i>
+                Reservation History
+            </h5>
+
+            <a href="/reservation/" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i> New Booking
+            </a>
+        </div>
+
+        <div class="card-body p-0">
 
             <div class="table-responsive">
-
-                                {% if messages %}
-
-                    {% for message in messages %}
-
-                        <div class="alert alert-success">
-
-                            {{ message }}
-
-                        </div>
-
-                    {% endfor %}
-
-                {% endif %}
 
                 <table class="table table-hover">
 
@@ -50,137 +438,156 @@
                             <th>Check In</th>
                             <th>Check Out</th>
                             <th>Guests</th>
-                            <th>Action</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
                         </tr>
 
                     </thead>
 
-                <tbody>
+                    <tbody>
 
-                {% for reservation in reservations %}
+                        {% for reservation in reservations %}
 
-                <tr>
+                            <tr class="reservation-row" data-checkin="{{ reservation.check_in|date:'Y-m-d' }}">
 
-                    <td>
-                        {{ reservation.room_type }}
-                    </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="room-icon">
+                                            <i class="fas fa-bed"></i>
+                                        </div>
+                                        <div>
+                                            <strong>{{ reservation.room_type }}</strong>
+                                        </div>
+                                    </div>
+                                </td>
 
-                    <td>
-                        {{ reservation.check_in }}
-                    </td>
+                                <td>
+                                    {{ reservation.check_in }}
+                                </td>
 
-                    <td>
-                        {{ reservation.check_out }}
-                    </td>
+                                <td>
+                                    {{ reservation.check_out }}
+                                </td>
 
-                    <td>
-                        {{ reservation.guests }}
-                    </td>
+                                <td>
+                                    <i class="fas fa-user text-muted me-1"></i>{{ reservation.guests }}
+                                </td>
 
                                 <td>
 
-                                {% if reservation.check_in > today %}
+                                    {% if reservation.check_in > today %}
 
-                                <button
-                                    class="btn btn-sm btn-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#cancelModal{{ reservation.id }}">
+                                        <span class="badge bg-success bg-opacity-25 text-success border border-success">
+                                            <i class="fas fa-circle-check me-1"></i> Upcoming
+                                        </span>
 
-                                    Cancel
+                                    {% else %}
 
-                                </button>
+                                        <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary">
+                                            <i class="fas fa-lock me-1"></i> Locked
+                                        </span>
 
-                                {% else %}
-
-                                <span class="badge bg-secondary">
-                                    Locked
-                                </span>
-
-                                {% endif %}
+                                    {% endif %}
 
                                 </td>
 
-                </tr>
+                                <td class="text-end">
 
-                {% if reservation.check_in > today %}
+                                    {% if reservation.check_in > today %}
 
-<div class="modal fade"
-     id="cancelModal{{ reservation.id }}"
-     tabindex="-1">
+                                        <button
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#cancelModal{{ reservation.id }}">
 
-    <div class="modal-dialog">
+                                            <i class="fas fa-xmark me-1"></i> Cancel
 
-        <div class="modal-content">
+                                        </button>
 
-            <div class="modal-header">
+                                    {% else %}
 
-                <h5 class="modal-title">
-                    Cancel Reservation
-                </h5>
+                                        <span class="text-muted small">
+                                            No actions
+                                        </span>
 
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
-                </button>
+                                    {% endif %}
 
-            </div>
+                                </td>
 
-            <div class="modal-body">
+                            </tr>
 
-                <p>
-                    Are you sure you want to cancel your
-                    <strong>{{ reservation.room_type }}</strong>
-                    reservation?
-                </p>
+                            {% if reservation.check_in > today %}
 
-                <p class="text-danger mb-0">
-                    This action cannot be undone.
-                </p>
+                                <div class="modal fade" id="cancelModal{{ reservation.id }}" tabindex="-1">
 
-            </div>
+                                    <div class="modal-dialog modal-dialog-centered">
 
-            <div class="modal-footer">
+                                        <div class="modal-content">
 
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+                                            <div class="modal-header border-0">
 
-                    Keep Reservation
+                                                <h5 class="modal-title text-danger">
+                                                    <i class="fas fa-triangle-exclamation me-2"></i>
+                                                    Cancel Reservation
+                                                </h5>
 
-                </button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
-                <a href="{% url 'cancel_reservation' reservation.id %}"
-                   class="btn btn-danger">
+                                            </div>
 
-                    Yes, Cancel
+                                            <div class="modal-body">
 
-                </a>
+                                                <p>
+                                                    Are you sure you want to cancel your
+                                                    <strong>{{ reservation.room_type }}</strong>
+                                                    reservation?
+                                                </p>
 
-            </div>
+                                                <p class="text-danger mb-0 small">
+                                                    <i class="fas fa-circle-info me-1"></i>
+                                                    This action cannot be undone.
+                                                </p>
 
-        </div>
+                                            </div>
 
-    </div>
+                                            <div class="modal-footer border-0">
 
-</div>
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                    Keep Reservation
+                                                </button>
 
-{% endif %}
+                                                <a href="{% url 'cancel_reservation' reservation.id %}" class="btn btn-danger">
+                                                    <i class="fas fa-check me-1"></i> Yes, Cancel
+                                                </a>
 
-                {% empty %}
+                                            </div>
 
-                <tr>
+                                        </div>
 
-                    <td colspan="5" class="text-center">
+                                    </div>
 
-                        No reservations found.
+                                </div>
 
-                    </td>
+                            {% endif %}
 
-                </tr>
+                        {% empty %}
 
-                {% endfor %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-calendar-xmark"></i>
+                                        <p class="mb-1 fw-bold">No reservations found</p>
+                                        <p class="mb-3 small">You haven't booked a stay with us yet.</p>
+                                        <a href="/reservation/" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus me-1"></i> Book a Room
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
 
-                </tbody>
+                        {% endfor %}
+
+                    </tbody>
 
                 </table>
 
@@ -193,6 +600,62 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ---------- Theme Toggle ---------- */
+(function() {
+    const toggleBtn = document.getElementById('themeToggle');
+    const iconSun = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    applyTheme(initialTheme);
+
+    toggleBtn.addEventListener('click', function() {
+        const currentTheme = root.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            iconSun.style.display = 'block';
+            iconMoon.style.display = 'none';
+        } else {
+            root.removeAttribute('data-theme');
+            iconSun.style.display = 'none';
+            iconMoon.style.display = 'block';
+        }
+    }
+})();
+
+/* ---------- Upcoming / Locked counts (client-side, from badges already rendered) ---------- */
+(function() {
+    const rows = document.querySelectorAll('.reservation-row');
+    let upcoming = 0;
+    let locked = 0;
+
+    rows.forEach(function(row) {
+        if (row.querySelector('.badge.text-success')) {
+            upcoming++;
+        } else {
+            locked++;
+        }
+    });
+
+    const upcomingEl = document.getElementById('upcomingCount');
+    const lockedEl = document.getElementById('lockedCount');
+
+    if (upcomingEl) upcomingEl.textContent = upcoming;
+    if (lockedEl) lockedEl.textContent = locked;
+})();
+</script>
 
 </body>
 </html>

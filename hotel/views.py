@@ -31,11 +31,13 @@ def about(request):
 def rooms(request):
     return render(request, 'rooms.html')
 
+from django.utils import timezone
+
 def reservation(request):
     print("HOTEL RESERVATION VIEW LOADED")
     print("USER:", request.user)
     print("AUTH:", request.user.is_authenticated)
-    
+
     if not request.user.is_authenticated:
         return redirect(
             '/guests/login/?next=/reservation/'
@@ -43,7 +45,10 @@ def reservation(request):
 
     return render(
         request,
-        'reservation.html'
+        'reservation.html',
+        {
+            'today': timezone.localdate().isoformat()
+        }
     )
 
 def events(request):
@@ -205,6 +210,7 @@ from django.db.models import Sum, Avg
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Sum, Avg
+from notifications.models import Notification
 
 @login_required
 def admin_dashboard(request):
@@ -236,6 +242,15 @@ def admin_dashboard(request):
             (occupied_rooms / total_rooms) * 100,
             1
         )
+
+
+        unread_notifications = Notification.objects.filter(
+            is_read=False
+        ).count()
+
+        recent_notifications = Notification.objects.order_by(
+            '-created_at'
+        )[:5]
 
     # Reservations
     active_reservations = Reservation.objects.filter(
@@ -532,6 +547,10 @@ def admin_dashboard(request):
         'maintenance_rooms': maintenance_rooms,
         'occupancy_rate': occupancy_rate,
 
+            # notifications
+        'unread_notifications': unread_notifications,
+        'recent_notifications': recent_notifications,
+
         
         'total_events': total_events,
         'total_messages': total_messages,
@@ -609,7 +628,16 @@ def reception_dashboard(request):
 
     cleaning_rooms = Room.objects.filter(
     status='Cleaning'
-).count()
+    ).count()
+
+    unread_notifications = Notification.objects.filter(
+    is_read=False
+    ).count()
+
+    recent_notifications = Notification.objects.order_by(
+        '-created_at'
+    )[:5]
+
 
     context = {
         'reservations': reservations,
@@ -627,6 +655,9 @@ def reception_dashboard(request):
         'booked_reservations': booked_reservations,
         'checked_in_guests': checked_in_guests,
         'cleaning_rooms': cleaning_rooms,
+
+        'unread_notifications': unread_notifications,
+        'recent_notifications': recent_notifications,
     }
 
     return render(

@@ -51,4 +51,13 @@ urlpatterns = [
         name='leave_review'
     ),
 
+
+
+  
+   path(
+        'support/',
+        views.guest_support,
+        name='guest_support'
+    ),
+
 ]

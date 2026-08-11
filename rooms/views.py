@@ -209,6 +209,7 @@ def housekeeping_dashboard(request):
     )
 
 from django.shortcuts import get_object_or_404, redirect
+from notifications.utils import create_notification
 
 @login_required
 def mark_room_clean(request, room_id):
@@ -220,6 +221,11 @@ def mark_room_clean(request, room_id):
 
     room.status = 'Available'
     room.save()
+
+    create_notification(
+    "Housekeeping",
+    f"Room {room.room_number} marked clean"
+    )
 
     create_log(
         request.user,

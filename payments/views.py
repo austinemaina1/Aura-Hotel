@@ -7,6 +7,8 @@ from django.utils import timezone
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 import json
+from django.contrib import messages
+
 def payment_list(request):
 
     payments = Payment.objects.all()
@@ -247,6 +249,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PaymentForm
 from .models import Payment
 from reservations.models import Reservation
+from notifications.utils import create_notification
+from billing.models import Invoice
 
 
 def make_payment(request, reservation_id):
@@ -272,6 +276,11 @@ def make_payment(request, reservation_id):
 
             payment.save()
 
+            create_notification(
+            "Payment Received",
+            f"KSh {request.POST.get('amount')} received from {reservation.guest_name}"
+        )
+
             reservation.payment_status = 'Paid'
             reservation.save()
 
@@ -283,7 +292,7 @@ def make_payment(request, reservation_id):
             invoice.status = 'Paid'
             invoice.save()
 
-            return redirect('guest_dashboard')
+            return redirect('payment_receipt',payment.id)
 
     else:
 
@@ -295,5 +304,130 @@ def make_payment(request, reservation_id):
         {
             'reservation': reservation,
             'form': form
+        }
+    )
+
+
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.shortcuts import redirect
+
+from reservations.models import Reservation
+from billing.models import Invoice
+
+from .mpesa import stk_push
+
+
+def make_mpesa_payment(request, reservation_id):
+
+    reservation = get_object_or_404(
+        Reservation,
+        id=reservation_id
+    )
+
+    invoice = get_object_or_404(
+        Invoice,
+        reservation=reservation
+    )
+
+    if request.method == "POST":
+
+        phone_number = request.POST.get(
+            "phone_number"
+        )
+
+        try:
+
+            response = stk_push(
+                phone_number=phone_number,
+                amount=invoice.total_amount,
+                account_reference=f"INV{invoice.id}",
+                transaction_desc=(
+                    f"Aura Hotel Invoice "
+                    f"{invoice.id}"
+                )
+            )
+
+            if response.get(
+                "ResponseCode"
+            ) == "0":
+
+                messages.success(
+                    request,
+                    (
+                        "STK Push sent successfully. "
+                        "Check your phone."
+                    )
+                )
+
+            else:
+
+                messages.error(
+                    request,
+                    response.get(
+                        "errorMessage",
+                        "Payment failed."
+                    )
+                )
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                str(e)
+            )
+
+        return redirect(
+            "invoice_detail",
+            invoice.id
+        )
+
+    return redirect(
+        "invoice_detail",
+        invoice.id
+    )
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+
+@csrf_exempt
+def mpesa_callback(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        print("========== MPESA CALLBACK ==========")
+        print(data)
+        print("===================================")
+
+        return JsonResponse({
+            "ResultCode": 0,
+            "ResultDesc": "Accepted"
+        })
+
+    return JsonResponse({
+        "message": "Callback endpoint working"
+    })
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Payment
+
+
+def payment_receipt(request, payment_id):
+
+    payment = get_object_or_404(
+        Payment,
+        id=payment_id
+    )
+
+    return render(
+        request,
+        'payment_receipt.html',
+        {
+            'payment': payment
         }
     )

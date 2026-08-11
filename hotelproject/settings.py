@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'guests',
     'records',
     'billing',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,18 @@ LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# ==========================
+# M-PESA SANDBOX SETTINGS
+# ==========================
+
+MPESA_CONSUMER_KEY = "4F3ETvhSLFv4vNQPIYbt4t5XZsZL03F4Z45CWoIslKy7HQDW"
+
+MPESA_CONSUMER_SECRET = "N7hxXhCNCrGpTEEIZwuJHq61W30Ame2crAy3A6ez8tHckHE0R8VDIbIFeN1oaJH0"
+
+MPESA_SHORTCODE = "174379"
+
+MPESA_PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+
+MPESA_CALLBACK_URL = "https://your-domain.com/payments/mpesa/callback/"

@@ -20,13 +20,29 @@ body{
     background:#f4f6f9;
 }
 
-.sidebar{
-    width:260px;
-    min-height:100vh;
-    background:#212529;
-    color:white;
-    position:sticky;
-    top:0;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 250px; /* adjust to your sidebar width */
+    height: 100vh;
+
+    overflow-y: auto;
+
+    background: #1c2940;
+    z-index: 1000;
+}
+
+.sidebar h4{
+    color: #ffffff;
+    font-weight: 700;
+    margin-top: 10px;
+    text-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+
+.main-content {
+    margin-left: 280px; /* same as sidebar width */
 }
 
 .sidebar .nav-link{
@@ -61,13 +77,14 @@ body{
     border-radius:15px;
     padding:20px;
     box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
 
-.logo{
+} .logo-circle{
     width:80px;
     height:80px;
-    object-fit:contain;
-}
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #d4af37;
+    }
 
 </style>
 
@@ -84,7 +101,7 @@ body{
         <div class="text-center mb-4">
 
             <img src="{% static 'images/logo.png' %}"
-                 class="logo mb-2">
+                 class="logo-circle mb-2">
 
             <h4>Aura Hotel</h4>
 
@@ -143,7 +160,7 @@ body{
     </div>
 
     <!-- CONTENT -->
-
+    <div class="main-content">
     <div class="flex-grow-1 p-4">
 
         <div class="mb-4">
@@ -430,6 +447,7 @@ body{
 
         </div>
 
+    </div>
     </div>
 
 </div>

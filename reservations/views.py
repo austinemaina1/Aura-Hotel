@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from requests import request
 
 from .models import Reservation
 from .forms import ReservationForm
@@ -10,6 +11,7 @@ from rooms.models import Room
 from reservations.models import Reservation
 from django.contrib import messages
 from django.shortcuts import redirect
+from notifications.utils import create_notification
 
 
 def get_available_room(room_type, check_in, check_out):
@@ -86,7 +88,8 @@ def reservation_list(request):
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from rooms.models import Room
-
+from guests.models import GuestProfile
+from billing.models import Invoice
 
 def create_reservation(request):
 
@@ -132,6 +135,38 @@ def create_reservation(request):
 
             reservation.save()
 
+            create_notification(
+            "New Reservation",
+            f"{reservation.guest_name} booked Room {reservation.room.room_number}"
+        )
+
+            nights = (
+                reservation.check_out -
+                reservation.check_in
+            ).days
+
+            room_charge = (
+                reservation.room.price * nights
+            )
+
+            Invoice.objects.create(
+                reservation=reservation,
+                nights=nights,
+                room_charge=room_charge,
+                extra_charges=0,
+                total_amount=room_charge,
+                status='Pending'
+            )
+
+            profile, created = GuestProfile.objects.get_or_create(
+                user=request.user
+            )
+
+            if reservation.phone:
+                profile.phone_number = reservation.phone
+
+            profile.save()
+
             request.session.pop('room_id', None)
             request.session.pop('check_in', None)
             request.session.pop('check_out', None)
@@ -149,11 +184,12 @@ def create_reservation(request):
 
     return render(
         request,
-        'create_reservation.html',
+        "create_reservation.html",
         {
-            'form': form
+            "form": form,
+            "today": timezone.localdate().isoformat()
         }
-    )
+        )
 
 
 @login_required
@@ -303,6 +339,11 @@ def check_in_guest(request, reservation_id):
     reservation.check_in_time = timezone.now()
     reservation.save()
 
+    create_notification(
+    "Guest Checked In",
+    f"{reservation.guest_name} checked into Room {reservation.room.room_number}"
+    )
+
     create_invoice(
     reservation
     )
@@ -351,6 +392,11 @@ def check_out_guest(request, reservation_id):
 
             reservation.payment_status = 'Paid'
             reservation.save()
+
+            create_notification(
+                "Guest Checked Out",
+                f"{reservation.guest_name} checked out of Room {room.room_number}"
+            )
 
             create_log(
                 request.user,

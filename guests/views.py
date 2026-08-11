@@ -80,7 +80,7 @@ def guest_login(request):
         'guests/guest_login.html'
     )
 
-
+from billing.models import Invoice
 @login_required
 def guest_dashboard(request):
 
@@ -109,7 +109,13 @@ def guest_dashboard(request):
     profile, created = GuestProfile.objects.get_or_create(
         user=request.user
     )
+
+    my_invoices = Invoice.objects.filter(
+    reservation__user=request.user
+).order_by('-created_at')[:5]
+    
     context = {
+        'my_invoices': my_invoices,
         'profile': profile,
         'reservation_count': reservation_count,
         'upcoming_stays': upcoming_stays,
@@ -279,5 +285,20 @@ def leave_review(request):
         'guests/leave_review.html',
         {
             'form': form
+        }
+    )
+
+@login_required
+def guest_support(request):
+
+    profile, created = GuestProfile.objects.get_or_create(
+        user=request.user
+    )
+
+    return render(
+        request,
+        'guests/guest_support.html',
+        {
+            'profile': profile
         }
     )
