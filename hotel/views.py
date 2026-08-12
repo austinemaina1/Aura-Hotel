@@ -195,6 +195,10 @@ def check_availability(request):
 
         return redirect('home')
 
+    # Not a POST request (e.g. someone navigates here directly) -
+    # there's no form to show on this URL, so just send them home.
+    return redirect('home')
+
 
 from rooms.models import Room
 from reservations.models import Reservation

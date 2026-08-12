@@ -390,7 +390,7 @@ textarea.form-control {
       font-size: 40px; } }
 
 .bg-pattern {
-  background: #e9ecef url("../img/round.png"); }
+  background: #e9ecef; }
 
 .slider-section {
   position: relative; }
