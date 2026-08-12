@@ -1,0 +1,708 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Aura Hotel Nairobi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="Aura Hotel Nairobi - Luxury accommodation, fine dining, events, and exceptional hospitality." />
+    <meta name="keywords" content="Aura Hotel, Nairobi Hotel, Luxury Hotel, Accommodation, Events, Restaurant" />
+
+    <link rel="stylesheet" type="text/css"
+        href="//fonts.googleapis.com/css?family=Roboto+Sans:400,700|Playfair+Display:400,700">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fancybox.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'fonts/ionicons/css/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome/css/font-awesome.min.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<header class="site-header js-site-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+
+            <div class="col-6 col-lg-4 site-logo" data-aos="fade">
+                <a href="{% url 'home' %}">Aura Hotel</a>
+            </div>
+
+            <div class="col-6 col-lg-8">
+<!-- Contact Info (appears when scrolling) -->
+<div class="header-contact">
+
+    <!-- Phone -->
+    <span class="phone">
+        <span class="fa fa-phone"></span>
+        +254 797 526 769
+    </span>
+
+    <!-- Social Media -->
+    <a href="#" class="social-link">
+        <span class="fa fa-facebook"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-instagram"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-twitter"></span>
+    </a>
+
+    <a href="#" class="social-link">
+        <span class="fa fa-linkedin"></span>
+    </a>
+
+    <!-- Book Now -->
+    <a href="{% url 'reservation' %}" class="book-now-btn">
+        Book Now
+    </a>
+
+    <!-- Dashboard -->
+    <a href="{% url 'admin_dashboard' %}" class="dashboard-btn">
+        <span class="fa fa-shield"></span>
+        Staff Dashboard
+    </a>
+
+    <!-- Guest Login -->
+    <a href="{% url 'guest_login' %}" class="guest-login-btn">
+        Guest Login
+    </a>
+
+</div>
+
+                <div class="site-menu-toggle js-site-menu-toggle" data-aos="fade">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="site-navbar js-site-navbar">
+                    <nav role="navigation">
+                        <div class="container">
+                            <div class="row full-height align-items-center">
+                                <div class="col-md-6 mx-auto">
+
+                                    <ul class="list-unstyled menu">
+                                        <li><a href="{% url 'home' %}">Home</a></li>
+                                        <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                                        <li><a href="{% url 'about' %}">About</a></li>
+                                        <li><a href="{% url 'events' %}">Events</a></li>
+                                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                                        <li><a href="{% url 'reservation' %}">Reservation</a></li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+            <section class="site-hero inner-page overlay"
+                style="background-image: url('{% static "images/aurahotel.png" %}');"
+                data-stellar-background-ratio="0.5">
+
+    <div class="container">
+        <div class="row site-hero-inner justify-content-center align-items-center">
+            <div class="col-md-10 text-center" data-aos="fade">
+                <h1 class="heading mb-3">About Aura Hotel</h1>
+
+                <ul class="custom-breadcrumbs mb-4">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li>&bullet;</li>
+                    <li>About</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <a class="mouse smoothscroll" href="#next">
+        <div class="mouse-icon">
+            <span class="mouse-wheel"></span>
+        </div>
+    </a>
+
+</section>
+<!-- END HERO -->
+
+
+<section class="py-5 bg-light" id="next">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-12 col-lg-7 ml-auto order-lg-2 mb-5"
+                data-aos="fade-up">
+
+                <img src="{% static 'images/registration.png' %}"
+                    alt="Aura Hotel Reception"
+                    class="img-fluid rounded w-100"
+                    style="height:480px; object-fit:cover;">
+
+            </div>
+
+            <div class="col-md-12 col-lg-4 order-lg-1"
+                data-aos="fade-up">
+
+                <h2 class="heading">Welcome to Aura Hotel Nairobi</h2>
+
+                <p class="mb-4">
+                    Aura Hotel Nairobi is a modern luxury destination designed to provide
+                    exceptional comfort, personalized service, and unforgettable hospitality.
+                    Whether you are traveling for business, leisure, conferences, or family
+                    vacations, our hotel offers the perfect environment for relaxation and productivity.
+                </p>
+
+                <p class="mb-4">
+                    Conveniently located within Nairobi, Aura Hotel features elegant guest rooms,
+                    fine dining experiences, conference facilities, recreational amenities,
+                    and professional staff dedicated to making every stay memorable.
+                </p>
+
+                <p>
+                    <a href="{% url 'reservation' %}"
+                        class="btn btn-primary text-white py-2 mr-3">
+                        Book Your Stay
+                    </a>
+
+                    <span class="mr-3 font-family-serif">
+                        <em>or</em>
+                    </span>
+
+                    <a href="{% url 'contact' %}"
+                        class="text-uppercase letter-spacing-1">
+                        Contact Us
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<div class="container section">
+
+    <div class="row justify-content-center text-center mb-5">
+        <div class="col-md-8 mb-5">
+            <h2 class="heading" data-aos="fade-up">
+                Meet Our Leadership Team
+            </h2>
+
+            <p data-aos="fade-up">
+                Our experienced management team is committed to delivering
+                world-class hospitality and ensuring every guest enjoys a
+                remarkable experience at Aura Hotel.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- General Manager -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="block-2">
+
+                <div class="flipper">
+
+                    <div class="front"
+                        style="background-image: url('{% static "images/leader1.jpg" %}');">
+
+                        <div class="box">
+                            <h2>Austine Maina</h2>
+                            <p>General Manager</p>
+                        </div>
+
+                    </div>
+
+                    <div class="back">
+
+                        <blockquote>
+                            <p>
+                                &ldquo;Our mission is to provide exceptional hospitality,
+                                outstanding comfort, and memorable experiences for every guest
+                                who chooses Aura Hotel.&rdquo;
+                            </p>
+                        </blockquote>
+
+                        <div class="author d-flex">
+                            <div class="image mr-3 align-self-center">
+                                <img src="{% static 'images/leader1.jpg' %}" alt="">
+                            </div>
+
+                            <div class="name align-self-center">
+                                Austine Maina
+                                <span class="position">General Manager</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Operations Manager -->
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="block-2">
+
+                <div class="flipper">
+
+                    <div class="front"
+                        style="background-image: url('{% static "images/leader3.jpg" %}');">
+
+                        <div class="box">
+                            <h2>Grace Sui</h2>
+                            <p>Operations Manager</p>
+                        </div>
+
+                    </div>
+
+                    <div class="back">
+
+                        <blockquote>
+                            <p>
+                                &ldquo;We focus on delivering seamless guest experiences,
+                                maintaining high standards, and ensuring every visitor feels
+                                welcomed and valued.&rdquo;
+                            </p>
+                        </blockquote>
+
+                        <div class="author d-flex">
+                            <div class="image mr-3 align-self-center">
+                                <img src="{% static 'images/leader3.jpg' %}" alt="">
+                            </div>
+
+                            <div class="name align-self-center">
+                                Grace Sui
+                                <span class="position">Operations Manager</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        
+        <!-- Guest Relations Manager -->
+<div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+    <div class="block-2">
+
+        <div class="flipper">
+
+            <div class="front"
+                style="background-image: url('{% static "images/leader2.jpg" %}');">
+
+                <div class="box">
+                    <h2>Mary Wanjiku</h2>
+                    <p>Guest Relations Manager</p>
+                </div>
+
+            </div>
+
+            <div class="back">
+
+                <blockquote>
+                    <p>
+                        &ldquo;Our goal is to create memorable experiences for every guest
+                        through personalized service, attention to detail, and genuine
+                        hospitality from arrival to departure.&rdquo;
+                    </p>
+                </blockquote>
+
+                <div class="author d-flex">
+                    <div class="image mr-3 align-self-center">
+                        <img src="{% static 'images/leader2.jpg' %}" alt="Guest Relations Manager">
+                    </div>
+
+                    <div class="name align-self-center">
+                        Mary Wanjiku
+                        <span class="position">Guest Relations Manager</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+        </div>
+
+    </div>
+
+</div>
+<!-- END LEADERSHIP -->
+<section class="section slider-section bg-light">
+  <div class="container">
+
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-md-7">
+        <h2 class="heading" data-aos="fade-up">Aura Hotel Gallery</h2>
+
+        <p data-aos="fade-up" data-aos-delay="100">
+          Explore the elegance, comfort, and world-class hospitality that make
+          Aura Hotel Nairobi a preferred destination for business and leisure travelers.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="home-slider major-caousel owl-carousel mb-5"
+             data-aos="fade-up"
+             data-aos-delay="200">
+
+          <div class="slider-item">
+            <a href="{% static 'images/room1.png' %}"
+               data-fancybox="images"
+               data-caption="Executive Suite">
+              <img src="{% static 'images/room1.png' %}"
+                   alt="Executive Suite"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/room2.png' %}"
+               data-fancybox="images"
+               data-caption="Deluxe Room">
+              <img src="{% static 'images/room2.png' %}"
+                   alt="Deluxe Room"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/room3.png' %}"
+               data-fancybox="images"
+               data-caption="Luxury Suite">
+              <img src="{% static 'images/room3.png' %}"
+                   alt="Luxury Suite"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/restaurant.png' %}"
+               data-fancybox="images"
+               data-caption="Fine Dining Restaurant">
+              <img src="{% static 'images/restaurant.png' %}"
+                   alt="Restaurant"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/reception2.png' %}"
+               data-fancybox="images"
+               data-caption="Hotel Reception">
+              <img src="{% static 'images/reception2.png' %}"
+                   alt="Reception"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/food2.png' %}"
+               data-fancybox="images"
+               data-caption="Signature Cuisine">
+              <img src="{% static 'images/food2.png' %}"
+                   alt="Cuisine"
+                   class="img-fluid">
+            </a>
+          </div>
+
+          <div class="slider-item">
+            <a href="{% static 'images/waiter.png' %}"
+               data-fancybox="images"
+               data-caption="Exceptional Guest Service">
+              <img src="{% static 'images/waiter.png' %}"
+                   alt="Waiter Service"
+                   class="img-fluid">
+            </a>
+          </div>
+
+        </div>
+        <!-- END slider -->
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- END section -->
+
+<div class="section">
+  <div class="container">
+
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-md-7 mb-5">
+        <h2 class="heading" data-aos="fade">Our Journey</h2>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+
+        <div class="timeline-item" date-is="2026" data-aos="fade">
+          <h3>A Leading Hospitality Destination</h3>
+          <p>
+            Today, Aura Hotel Nairobi stands as a trusted destination for travelers,
+            business professionals, and families seeking comfort, luxury, and exceptional service.
+            Our modern facilities, elegant accommodations, and dedicated team continue to deliver
+            memorable experiences to guests from Kenya and around the world.
+          </p>
+
+          <p>
+            With premium rooms, fine dining, conference facilities, recreational amenities,
+            and personalized hospitality, Aura Hotel has become a preferred choice for both
+            business and leisure travelers.
+          </p>
+        </div>
+
+        <div class="timeline-item" date-is="2022" data-aos="fade">
+          <h3>Expansion & Modernization</h3>
+
+          <p>
+            As guest expectations evolved, Aura Hotel invested in modern infrastructure,
+            upgraded guest rooms, enhanced conference facilities, and introduced new dining
+            experiences. These improvements strengthened our commitment to providing world-class
+            hospitality while maintaining a warm and welcoming atmosphere.
+          </p>
+        </div>
+
+        <div class="timeline-item" date-is="2018" data-aos="fade">
+          <h3>The Beginning of Aura Hotel</h3>
+
+          <p>
+            Aura Hotel was established with a vision of creating a hospitality destination
+            where comfort, elegance, and personalized service come together. From its earliest
+            days, the hotel focused on delivering exceptional guest experiences and building
+            lasting relationships with visitors from across Kenya and beyond.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    
+    
+   <section class="section bg-image overlay"
+    style="background-image: url('{% static "images/view.png" %}');">
+
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-12 col-md-7 text-center mb-4 mb-md-0 text-md-left"
+                data-aos="fade-up">
+
+                <h2 class="text-white font-weight-bold">
+                    Experience Comfort, Luxury & Exceptional Hospitality at Aura Hotel
+                </h2>
+
+                <p class="text-white mt-3 mb-0">
+                    Book your stay today and enjoy elegant rooms, fine dining,
+                    modern conference facilities, and personalized service in Nairobi.
+                </p>
+
+            </div>
+
+            <div class="col-12 col-md-5 text-center text-md-right"
+                data-aos="fade-up"
+                data-aos-delay="200">
+
+                        <a href="{% url 'reservation' %}"
+                            class="btn btn-outline-white-primary py-3 text-white px-5">
+                            Reserve Now
+                        </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+<footer class="section footer-section">
+    <div class="container">
+
+        <div class="row mb-4">
+
+            <!-- Quick Links -->
+            <div class="col-md-3 mb-5">
+
+                <h5 class="text-white mb-4">Quick Links</h5>
+
+                <ul class="list-unstyled link">
+                    <li><a href="#">About Aura Hotel</a></li>
+                    <li><a href="#">Rooms & Suites</a></li>
+                    <li><a href="#">Events & Conferences</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+
+            </div>
+
+            <!-- Services -->
+            <div class="col-md-3 mb-5">
+
+                <h5 class="text-white mb-4">Our Services</h5>
+
+                <ul class="list-unstyled link">
+                    <li><a href="#">Luxury Accommodation</a></li>
+                    <li><a href="#">Restaurant & Dining</a></li>
+                    <li><a href="#">Conference Facilities</a></li>
+                    <li><a href="#">Swimming Pool & Recreation</a></li>
+                </ul>
+
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-md-3 mb-5 pr-md-5 contact-info">
+
+                <h5 class="text-white mb-4">Contact Information</h5>
+
+                <p>
+                    <span class="d-block">
+                        <span class="ion-ios-location h5 mr-3 text-primary"></span>
+                        Address:
+                    </span>
+
+                    <span>
+                        Nairobi, Kenya
+                    </span>
+                </p>
+
+                <p>
+                    <span class="d-block">
+                        <span class="ion-ios-telephone h5 mr-3 text-primary"></span>
+                        Phone:
+                    </span>
+
+                    <span>
+                        +254 700 123 456
+                    </span>
+                </p>
+
+                <p>
+                    <span class="d-block">
+                        <span class="ion-ios-email h5 mr-3 text-primary"></span>
+                        Email:
+                    </span>
+
+                    <span>
+                        info@aurahotel.co.ke
+                    </span>
+                </p>
+
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-md-3 mb-5">
+
+                <h5 class="text-white mb-4">Newsletter</h5>
+
+                <p>
+                    Subscribe to receive exclusive offers, promotions, and hotel updates.
+                </p>
+
+                <form action="#" class="footer-newsletter">
+
+                    <div class="form-group">
+                        <input type="email"
+                            class="form-control"
+                            placeholder="Enter your email">
+
+                        <button type="submit" class="btn">
+                            <span class="fa fa-paper-plane"></span>
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="row pt-5">
+
+            <p class="col-md-6 text-left">
+                Copyright &copy;
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+
+                Aura Hotel Nairobi. All Rights Reserved.
+            </p>
+
+            <p class="col-md-6 text-right social">
+
+                <a href="#">
+                    <span class="fa fa-facebook"></span>
+                </a>
+
+                <a href="#">
+                    <span class="fa fa-twitter"></span>
+                </a>
+
+                <a href="#">
+                    <span class="fa fa-instagram"></span>
+                </a>
+
+                <a href="#">
+                    <span class="fa fa-linkedin"></span>
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+</footer>
+ {% load static %}
+
+        <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+        <script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+
+        <script src="{% static 'js/aos.js' %}"></script>
+
+        <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+        <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
+
+        <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check avaiability</title>
+</head>
+<body>
+
+
+<div class="container mt-5">
+    <h2>Check Room Availability</h2>
+
+<form method="POST" action="{% url 'check_availability' %}">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Room Type</label>
+        <select name="room_type" class="form-control" required>
+            <option value="">Select Room</option>
+            <option value="Standard Room">Standard Room</option>
+            <option value="Deluxe Room">Deluxe Room</option>
+            <option value="Family Suite">Family Suite</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Check-in Date</label>
+        <input type="date" name="check_in" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Check-out Date</label>
+        <input type="date" name="check_out" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Guests</label>
+        <input type="number" name="guests" min="1" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Check Availability
+    </button>
+</form>
+</div>
+
+</body>
+</html>

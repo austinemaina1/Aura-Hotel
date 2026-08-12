@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reception Dashboard | Aura Hotel</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+:root{
+    --bg-color:#f4f6f9;
+    --text-color:#212529;
+    --text-muted:#6c757d;
+    --card-bg:#ffffff;
+    --card-shadow:rgba(0,0,0,.08);
+    --border-color:#dee2e6;
+    --sidebar-bg:#1f2937;
+    --sidebar-hover:#374151;
+    --sidebar-text:#d1d5db;
+    --table-hover:rgba(0,0,0,.03);
+    --table-header-bg:#f8f9fa;
+    --field-bg:#f8f9fb;
+}
+
+[data-theme="dark"]{
+    --bg-color:#0f1115;
+    --text-color:#e8e8e8;
+    --text-muted:#a0a0a0;
+    --card-bg:#1a1d24;
+    --card-shadow:rgba(0,0,0,.4);
+    --border-color:#2d323c;
+    --sidebar-bg:#14161c;
+    --sidebar-hover:#20242e;
+    --sidebar-text:#d1d5db;
+    --table-hover:rgba(255,255,255,.04);
+    --table-header-bg:#1a1d24;
+    --field-bg:#20242e;
+}
+
+body{
+    background:var(--bg-color);
+    color:var(--text-color);
+    font-family:Arial, sans-serif;
+    transition:background-color .3s ease, color .3s ease;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:260px;
+    height:100vh;
+    background:var(--sidebar-bg);
+    overflow-y:auto;
+    transition:background-color .3s ease;
+}
+
+.sidebar-brand{
+    padding:22px 20px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.brand-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.brand-mark{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+}
+
+.brand-mark img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.brand-text{
+    text-align:left;
+}
+
+.brand-text h3{
+    color:#fff;
+    margin-bottom:0;
+    font-size:1.15rem;
+    font-weight:700;
+}
+
+.brand-text small{
+    color:#9ca3af;
+}
+
+.sidebar a{
+    display:block;
+    color:var(--sidebar-text);
+    text-decoration:none;
+    padding:14px 25px;
+    transition:all .3s ease;
+}
+
+.sidebar a:hover{
+    background:var(--sidebar-hover);
+    color:#fff;
+}
+
+.sidebar a.active{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.sidebar i{
+    margin-right:10px;
+}
+
+.content{
+    margin-left:260px;
+    padding:30px;
+}
+
+.top-bar{
+    background:var(--card-bg);
+    color:var(--text-color);
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:25px;
+    box-shadow:0 2px 10px var(--card-shadow);
+    transition:background-color .3s ease, color .3s ease;
+}
+
+#themeToggle{
+    width:44px;
+    height:44px;
+    background:var(--field-bg);
+    border:1px solid var(--border-color);
+    transition:background-color .3s ease, border-color .3s ease;
+}
+
+.stat-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 2px 10px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    transition:.3s;
+    height:100%;
+}
+
+.stat-card:hover{
+    transform:translateY(-3px);
+}
+
+.stat-icon{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.2rem;
+    margin:0 auto 10px;
+}
+
+.stat-number{
+    font-size:1.9rem;
+    font-weight:bold;
+}
+
+.section-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 2px 10px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    transition:background-color .3s ease, color .3s ease;
+}
+
+.section-card .card-header{
+    background:var(--card-bg);
+    color:var(--text-color);
+    border-bottom:1px solid var(--border-color);
+}
+
+.table{
+    --bs-table-color: var(--text-color);
+    --bs-table-bg: transparent;
+    --bs-table-striped-color: var(--text-color);
+    --bs-table-striped-bg: var(--table-hover);
+    --bs-table-active-color: var(--text-color);
+    --bs-table-active-bg: var(--table-hover);
+    --bs-table-hover-color: var(--text-color);
+    --bs-table-hover-bg: var(--table-hover);
+    --bs-table-border-color: var(--border-color);
+    color:var(--text-color);
+    margin-bottom:0;
+}
+
+.table th{
+    background:var(--table-header-bg);
+    color:var(--text-muted);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.table > :not(caption) > * > *{
+    color:var(--text-color);
+    border-bottom-color:var(--border-color);
+    background-color:transparent;
+}
+
+.room-icon{
+    width:34px;
+    height:34px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(13,110,253,.1);
+    color:#0d6efd;
+    flex-shrink:0;
+}
+
+.quick-btn{
+    padding:12px;
+}
+
+.form-control{
+    background:var(--field-bg);
+    color:var(--text-color);
+    border-color:var(--border-color);
+}
+
+.form-control:focus{
+    background:var(--field-bg);
+    color:var(--text-color);
+    border-color:#0d6efd;
+    box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+/* Bootstrap's .text-muted uses a fixed dark-gray that doesn't adapt to
+   our custom [data-theme="dark"] attribute (only Bootstrap's own
+   data-bs-theme does that) — override it to follow our theme variable,
+   otherwise it's nearly invisible on dark card backgrounds. */
+.text-muted{
+    color:var(--text-muted) !important;
+}
+
+.chart-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 2px 10px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    padding:20px;
+    height:100%;
+}
+
+.chart-card h6{
+    font-weight:700;
+    margin-bottom:16px;
+}
+
+.legend-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+    margin-right:6px;
+}
+
+.empty-state{
+    text-align:center;
+    padding:40px 20px;
+    color:var(--text-muted);
+}
+
+.empty-state i{
+    font-size:2rem;
+    margin-bottom:10px;
+    opacity:.5;
+}
+
+@media(max-width:992px){
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+    }
+    .content{
+        margin-left:0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <div class="brand-mark">
+                <img src="{% static 'images/logo.png' %}" alt="Aura Hotel logo">
+            </div>
+            <div class="brand-text">
+                <h3>Aura Hotel</h3>
+                <small>Reception Portal</small>
+            </div>
+        </div>
+    </div>
+
+    <a href="{% url 'reception_dashboard' %}" class="active">
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+    </a>
+
+    <a href="/reservations/">
+        <i class="bi bi-calendar-check"></i>
+        Reservations
+    </a>
+
+    <a href="{% url 'reservation' %}">
+        <i class="bi bi-plus-circle"></i>
+        New Reservation
+    </a>
+
+    <a href="{% url 'room_management' %}">
+        <i class="bi bi-door-open"></i>
+        Rooms
+    </a>
+
+    <a href="#">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Check-In Guests
+    </a>
+
+    <a href="#">
+        <i class="bi bi-box-arrow-right"></i>
+        Check-Out Guests
+    </a>
+
+    <a href="{% url 'billing_dashboard' %}">
+        <i class="bi bi-receipt"></i>
+        Billing
+    </a>
+
+    <a href="#">
+        <i class="bi bi-chat-left-text"></i>
+        Guest Messages
+    </a>
+
+    <a href="{% url 'logout' %}">
+        <i class="bi bi-power"></i>
+        Logout
+    </a>
+
+</div>
+
+<!-- Main Content -->
+<div class="content">
+
+    <!-- Top Header -->
+    <div class="top-bar">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <h2 class="mb-1">Reception Dashboard</h2>
+                <p class="text-muted mb-0">Welcome, {{ request.user.username }}</p>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <!-- Dark / Light Mode Toggle -->
+                <button class="btn rounded-circle d-flex align-items-center justify-content-center"
+                        id="themeToggle"
+                        title="Toggle dark/light mode">
+                    <i class="bi bi-moon-stars-fill" id="iconMoon" style="color:#4B4B4B;"></i>
+                    <i class="bi bi-sun-fill" id="iconSun" style="color:#FFA500; display:none;"></i>
+                </button>
+
+                <!-- Notification Bell -->
+                <div class="dropdown">
+
+                    <button class="btn btn-outline-secondary position-relative"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                        <i class="bi bi-bell"></i>
+                        Notifications
+
+                        {% if unread_notifications > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ unread_notifications }}
+                        </span>
+                        {% endif %}
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0"
+                        style="width:380px; border-radius:15px; overflow:hidden; background:var(--card-bg);">
+
+                        <li class="dropdown-header py-3" style="background:var(--field-bg);">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong style="color:var(--text-color);">Notifications</strong>
+                                <span class="badge bg-primary">{{ unread_notifications }}</span>
+                            </div>
+                        </li>
+
+                        {% for notification in recent_notifications %}
+                        <li>
+                            <div class="dropdown-item py-3 border-bottom" style="color:var(--text-color); border-color:var(--border-color) !important;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>{{ notification.title }}</strong>
+                                    {% if not notification.is_read %}
+                                    <span class="badge bg-danger">New</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted d-block mt-1">{{ notification.message|truncatechars:60 }}</small>
+                                <small class="text-secondary d-block mt-1">{{ notification.created_at|date:"d M Y H:i" }}</small>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li>
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-bell-slash fs-2"></i>
+                                <p class="mb-0 mt-2">No notifications</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                        <li style="background:var(--field-bg);">
+                            <a href="{% url 'notification_list' %}"
+                               class="dropdown-item text-center fw-bold py-3"
+                               style="color:var(--text-color);">
+                                🔔 Open Notification Center
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics: room + reservation overview (all real context vars) -->
+    <div class="row g-3 mb-1">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(13,110,253,.1); color:#0d6efd;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Total Reservations</h6>
+                    <div class="stat-number">{{ total_reservations }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(25,135,84,.1); color:#198754;">
+                        <i class="bi bi-door-open"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Available Rooms</h6>
+                    <div class="stat-number">{{ available_rooms }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(220,53,69,.1); color:#dc3545;">
+                        <i class="bi bi-door-closed"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Occupied Rooms</h6>
+                    <div class="stat-number">{{ occupied_rooms }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(13,202,240,.12); color:#0dcaf0;">
+                        <i class="bi bi-bucket"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Rooms Cleaning</h6>
+                    <div class="stat-number">{{ cleaning_rooms }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-3 mb-4 mt-1">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(255,193,7,.15); color:#ffc107;">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Today's Check-Ins</h6>
+                    <div class="stat-number">{{ today_checkins }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(111,66,193,.12); color:#6f42c1;">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Today's Check-Outs</h6>
+                    <div class="stat-number">{{ today_checkouts }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(13,110,253,.1); color:#0d6efd;">
+                        <i class="bi bi-bookmark-check"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Booked Reservations</h6>
+                    <div class="stat-number">{{ booked_reservations }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card stat-card">
+                <div class="card-body text-center">
+                    <div class="stat-icon" style="background:rgba(25,135,84,.1); color:#198754;">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h6 class="text-muted mb-1">Checked-In Guests</h6>
+                    <div class="stat-number">{{ checked_in_guests }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h6><i class="bi bi-pie-chart text-primary me-1"></i> Room Status Overview</h6>
+                <canvas id="roomStatusChart" height="200"></canvas>
+                <div class="d-flex justify-content-center gap-3 mt-3 flex-wrap small text-muted">
+                    <span><span class="legend-dot" style="background:#198754;"></span>Available</span>
+                    <span><span class="legend-dot" style="background:#dc3545;"></span>Occupied</span>
+                    <span><span class="legend-dot" style="background:#0dcaf0;"></span>Cleaning</span>
+                    <span><span class="legend-dot" style="background:#6c757d;"></span>Other</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h6><i class="bi bi-bar-chart text-primary me-1"></i> Reservation Status Breakdown</h6>
+                <canvas id="reservationStatusChart" height="200"></canvas>
+                <p class="text-muted small mt-2 mb-0" id="chartNote" style="display:none;">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Showing Booked reservations only — add the counts noted in the setup guide to your view for the full breakdown.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card section-card mb-4">
+        <div class="card-header">Quick Actions</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <a href="{% url 'reservation' %}" class="btn btn-primary w-100 quick-btn">
+                        <i class="bi bi-plus-circle"></i> New Reservation
+                    </a>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <a href="/reservations/" class="btn btn-success w-100 quick-btn">
+                        <i class="bi bi-calendar-check"></i> Manage Reservations
+                    </a>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <a href="{% url 'room_management' %}" class="btn btn-info w-100 quick-btn">
+                        <i class="bi bi-door-open"></i> View Rooms
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search (working client-side filter over the table below) -->
+    <div class="card section-card mb-4">
+        <div class="card-body">
+            <div class="input-group">
+                <span class="input-group-text" style="background:var(--field-bg); border-color:var(--border-color); color:var(--text-muted);">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text"
+                       id="reservationSearch"
+                       class="form-control"
+                       placeholder="Search by guest name or room number...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reservations -->
+    <div class="card section-card">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Recent Reservations</span>
+            <a href="/reservations/" class="btn btn-primary btn-sm">View All</a>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle" id="reservationsTable">
+
+                    <thead>
+                        <tr>
+                            <th>Guest</th>
+                            <th>Room</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
+                            <th>Guests</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for reservation in reservations %}
+
+                        <tr class="reservation-row"
+                            data-guest="{{ reservation.guest_name|lower }}"
+                            data-room="{{ reservation.room.room_number|lower }}">
+
+                            <td>{{ reservation.guest_name }}</td>
+
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="room-icon"><i class="bi bi-door-open"></i></div>
+                                    <div>
+                                        Room {{ reservation.room.room_number }}
+                                        <br>
+                                        <small class="text-muted">{{ reservation.room.room_type }}</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>{{ reservation.check_in|date:"M d, Y" }}</td>
+                            <td>{{ reservation.check_out|date:"M d, Y" }}</td>
+                            <td><i class="bi bi-person text-muted me-1"></i>{{ reservation.guests }}</td>
+
+                            <td>
+                                {% if reservation.status == 'Booked' %}
+                                    <span class="badge bg-primary">Booked</span>
+                                {% elif reservation.status == 'Checked In' %}
+                                    <span class="badge bg-success">Checked In</span>
+                                {% elif reservation.status == 'Pending Checkout' %}
+                                    <span class="badge bg-warning text-dark">Pending Checkout</span>
+                                {% elif reservation.status == 'Completed' %}
+                                    <span class="badge bg-secondary">Completed</span>
+                                {% elif reservation.status == 'Cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if reservation.payment_status == 'Paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Pending</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if reservation.status == 'Booked' %}
+                                    <a href="{% url 'check_in_guest' reservation.id %}" class="btn btn-success btn-sm">
+                                        <i class="bi bi-box-arrow-in-right"></i> Check In
+                                    </a>
+                                {% elif reservation.status == 'Checked In' %}
+                                    <a href="{% url 'check_out_guest' reservation.id %}" class="btn btn-warning btn-sm">
+                                        <i class="bi bi-box-arrow-right"></i> Check Out
+                                    </a>
+                                {% elif reservation.status == 'Pending Checkout' %}
+                                    <span class="badge bg-warning text-dark">Awaiting Checkout</span>
+                                {% else %}
+                                    <span class="text-muted">No Action</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <i class="bi bi-calendar-x"></i>
+                                    <p class="mb-0">No reservations found.</p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <div class="empty-state d-none" id="noSearchResults">
+                    <i class="bi bi-search"></i>
+                    <p class="mb-0">No reservations match your search.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script>
+/* ---------- Theme Toggle ---------- */
+(function() {
+    const toggleBtn = document.getElementById('themeToggle');
+    const iconSun = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    applyTheme(initialTheme);
+
+    toggleBtn.addEventListener('click', function() {
+        const currentTheme = root.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            iconSun.style.display = 'inline-block';
+            iconMoon.style.display = 'none';
+        } else {
+            root.removeAttribute('data-theme');
+            iconSun.style.display = 'none';
+            iconMoon.style.display = 'inline-block';
+        }
+    }
+})();
+
+/* ---------- Working search filter over the reservations table ---------- */
+(function() {
+    const searchInput = document.getElementById('reservationSearch');
+    const rows = document.querySelectorAll('.reservation-row');
+    const noResults = document.getElementById('noSearchResults');
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        rows.forEach(function(row) {
+            const guest = row.dataset.guest || '';
+            const room = row.dataset.room || '';
+            const matches = guest.includes(query) || room.includes(query);
+            row.style.display = matches ? '' : 'none';
+            if (matches) visibleCount++;
+        });
+
+        noResults.classList.toggle('d-none', visibleCount > 0 || rows.length === 0);
+    });
+})();
+
+/* ---------- Charts (real data from context, with safe fallback to 0) ---------- */
+(function() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e8e8e8' : '#212529';
+
+    const available = {{ available_rooms|default:0 }};
+    const occupied = {{ occupied_rooms|default:0 }};
+    const cleaning = {{ cleaning_rooms|default:0 }};
+    const totalRooms = {{ total_rooms|default:0 }};
+    const other = Math.max(totalRooms - available - occupied - cleaning, 0);
+
+    new Chart(document.getElementById('roomStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Available', 'Occupied', 'Cleaning', 'Other'],
+            datasets: [{
+                data: [available, occupied, cleaning, other],
+                backgroundColor: ['#198754', '#dc3545', '#0dcaf0', '#6c757d'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            cutout: '65%'
+        }
+    });
+
+    // Reservation status breakdown — only 'booked_reservations' is guaranteed
+    // from the current view. checked_in_count / pending_checkout_count /
+    // completed_count / cancelled_count are optional additions (see notes).
+    const booked = {{ booked_reservations|default:0 }};
+    const checkedIn = {{ checked_in_count|default:0 }};
+    const pendingCheckout = {{ pending_checkout_count|default:0 }};
+    const completed = {{ completed_count|default:0 }};
+    const cancelled = {{ cancelled_count|default:0 }};
+
+    const hasFullBreakdown = (checkedIn + pendingCheckout + completed + cancelled) > 0;
+
+    if (!hasFullBreakdown) {
+        document.getElementById('chartNote').style.display = 'block';
+    }
+
+    new Chart(document.getElementById('reservationStatusChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Booked', 'Checked In', 'Pending Checkout', 'Completed', 'Cancelled'],
+            datasets: [{
+                data: [booked, checkedIn, pendingCheckout, completed, cancelled],
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#6c757d', '#dc3545'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: textColor }, grid: { display: false } },
+                y: { ticks: { color: textColor, precision: 0 }, grid: { color: 'rgba(128,128,128,.15)' } }
+            }
+        }
+    });
+})();
+</script>
+
+</body>
+</html>

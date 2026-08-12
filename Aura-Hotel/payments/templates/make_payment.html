@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complete Payment | Aura Hotel</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg-color:#f5f7fb;
+    --text-color:#212529;
+    --text-muted:#6c757d;
+    --card-bg:#ffffff;
+    --card-shadow:rgba(0,0,0,.08);
+    --border-color:#dee2e6;
+    --sidebar-bg:#1e293b;
+    --sidebar-hover:#334155;
+    --sidebar-text:#ffffff;
+    --field-bg:#f8f9fb;
+}
+
+[data-theme="dark"]{
+    --bg-color:#0f1115;
+    --text-color:#e8e8e8;
+    --text-muted:#a0a0a0;
+    --card-bg:#1a1d24;
+    --card-shadow:rgba(0,0,0,.4);
+    --border-color:#2d323c;
+    --sidebar-bg:#14161c;
+    --sidebar-hover:#20242e;
+    --sidebar-text:#e8e8e8;
+    --field-bg:#20242e;
+}
+
+body{
+    background:var(--bg-color);
+    color:var(--text-color);
+    font-family:'Segoe UI',sans-serif;
+    transition:background-color .3s ease, color .3s ease;
+}
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    background:var(--sidebar-bg);
+    color:var(--sidebar-text);
+    position:fixed;
+    top:0;
+    left:0;
+    overflow-y:auto;
+    z-index:1000;
+    transition:background-color .3s ease;
+}
+
+.sidebar-header{
+    text-align:center;
+    padding:25px 15px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.brand-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.brand-mark{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+}
+
+.brand-mark img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.brand-text{
+    text-align:left;
+}
+
+.brand-text h4{
+    font-weight:700;
+    line-height:1.15;
+}
+
+.brand-text small{
+    opacity:.7;
+}
+
+.sidebar-menu{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar-menu a{
+    display:block;
+    color:var(--sidebar-text);
+    text-decoration:none;
+    padding:15px 25px;
+    transition:background-color .2s ease;
+}
+
+.sidebar-menu a:hover{
+    background:var(--sidebar-hover);
+}
+
+.sidebar-menu a.active{
+    background:var(--sidebar-hover);
+    border-left:3px solid #0d6efd;
+}
+
+.main-content{
+    margin-left:260px;
+    padding:25px;
+}
+
+#themeToggle{
+    width:46px;
+    height:46px;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    transition:background-color .3s ease, border-color .3s ease;
+}
+
+.card-support{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 3px 12px var(--card-shadow);
+    background:var(--card-bg);
+    color:var(--text-color);
+    transition:background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+
+.payment-banner{
+    background:linear-gradient(135deg,#198754,#146c43);
+    border-radius:15px 15px 0 0;
+    padding:28px 32px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+}
+
+.payment-banner::after{
+    content:"";
+    position:absolute;
+    top:-40px;
+    right:-40px;
+    width:160px;
+    height:160px;
+    background:rgba(255,255,255,.08);
+    border-radius:50%;
+}
+
+.payment-banner i{
+    font-size:1.6rem;
+    opacity:.9;
+}
+
+/* ---------- Reservation summary ---------- */
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border-color);
+}
+
+.summary-row:last-child{
+    border-bottom:none;
+}
+
+.summary-label{
+    color:var(--text-muted);
+    font-size:.85rem;
+}
+
+.summary-value{
+    font-weight:600;
+}
+
+.summary-icon{
+    width:36px;
+    height:36px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(25,135,84,.1);
+    color:#198754;
+    flex-shrink:0;
+}
+
+/* ---------- Style Django's default form.as_p output ---------- */
+.payment-form p{
+    margin-bottom:1.1rem;
+}
+
+.payment-form label{
+    display:block;
+    font-weight:600;
+    font-size:.88rem;
+    margin-bottom:6px;
+    color:var(--text-color);
+}
+
+.payment-form input,
+.payment-form select,
+.payment-form textarea{
+    width:100%;
+    background:var(--field-bg);
+    color:var(--text-color);
+    border:1px solid var(--border-color);
+    border-radius:10px;
+    padding:11px 14px;
+    font-size:.95rem;
+    transition:border-color .15s ease, box-shadow .15s ease;
+}
+
+.payment-form input:focus,
+.payment-form select:focus,
+.payment-form textarea:focus{
+    outline:none;
+    border-color:#198754;
+    box-shadow:0 0 0 .2rem rgba(25,135,84,.15);
+}
+
+.payment-form .helptext{
+    display:block;
+    font-size:.8rem;
+    color:var(--text-muted);
+    margin-top:4px;
+}
+
+.payment-form ul.errorlist{
+    list-style:none;
+    padding:0;
+    margin:6px 0 0;
+    color:#dc3545;
+    font-size:.85rem;
+}
+
+.secure-note{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--field-bg);
+    border-radius:10px;
+    padding:12px 16px;
+    font-size:.82rem;
+    color:var(--text-muted);
+    margin-top:18px;
+}
+
+.secure-note i{
+    color:#198754;
+    font-size:1.1rem;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+
+    <div class="brand-logo">
+
+        <div class="brand-mark">
+            <img src="{% static 'images/logo.png' %}" alt="Aura Hotel logo">
+        </div>
+
+        <div class="brand-text">
+            <h4 class="mb-0">Aura Hotel</h4>
+            <small class="d-block">Guest Portal</small>
+        </div>
+
+    </div>
+
+    <div class="text-center">
+
+        {% if profile.profile_picture %}
+
+            <img src="{{ profile.profile_picture.url }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110"
+                 style="object-fit:cover; border:3px solid rgba(255,255,255,.25);">
+
+        {% else %}
+
+            <img src="https://ui-avatars.com/api/?name={{ request.user.username }}"
+                 class="rounded-circle mb-3"
+                 width="110"
+                 height="110">
+
+        {% endif %}
+
+        <h5 class="mb-1">
+            {{ request.user.username }}
+        </h5>
+
+        <small class="text-light d-block">
+            {{ request.user.email }}
+        </small>
+
+        <span class="badge bg-success mt-2">
+            Active Guest
+        </span>
+
+    </div>
+
+</div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="{% url 'guest_dashboard' %}">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_profile' %}">
+                <i class="fas fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_reservations' %}" class="active">
+                <i class="fas fa-calendar-check"></i>
+                My Reservations
+            </a>
+        </li>
+
+        <li>
+            <a href="/reservation/">
+                <i class="fas fa-bed"></i>
+                Book Room
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'my_invoices' %}">
+                <i class="fas fa-file-invoice-dollar"></i>
+                My Invoices
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'leave_review' %}">
+                <i class="fas fa-star"></i>
+                Leave Review
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'guest_support' %}">
+                <i class="fas fa-life-ring"></i>
+                Support
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'logout' %}"
+            class="nav-link text-danger">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main-content">
+
+    <div class="mb-4 d-flex justify-content-between align-items-start flex-wrap gap-3">
+
+        <div>
+            <h2>
+                Complete Payment
+            </h2>
+
+            <p class="text-muted">
+                Review your reservation and confirm payment.
+            </p>
+        </div>
+
+        <!-- Dark / Light Mode Toggle -->
+        <button class="btn rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                id="themeToggle"
+                title="Toggle dark/light mode">
+
+            <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 style="color:#FFA500; display:none;" viewBox="0 0 16 16">
+                <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707L4.464 3.757a.5.5 0 0 1 0 .708z"/>
+            </svg>
+
+            <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 style="color:#4B4B4B;" viewBox="0 0 16 16">
+                <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+            </svg>
+
+        </button>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card card-support">
+
+                <div class="payment-banner">
+                    <i class="fas fa-lock mb-2 d-block"></i>
+                    <h4 class="mb-1">Secure Payment</h4>
+                    <p class="mb-0 opacity-75 small">
+                        You're one step away from confirming your reservation.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Reservation Summary -->
+                    <div class="mb-4">
+
+                        <h6 class="text-muted text-uppercase small mb-3" style="letter-spacing:.4px;">
+                            Reservation Summary
+                        </h6>
+
+                        <div class="summary-row">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="summary-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="summary-label">Guest</div>
+                                    <div class="summary-value">{{ reservation.guest_name }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-row">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="summary-icon">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div>
+                                    <div class="summary-label">Room</div>
+                                    <div class="summary-value">{{ reservation.room.room_type }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4" style="border-color:var(--border-color);">
+
+                    <h6 class="text-muted text-uppercase small mb-3" style="letter-spacing:.4px;">
+                        Payment Details
+                    </h6>
+
+                    <form method="post" class="payment-form">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="secure-note">
+                            <i class="fas fa-shield-halved"></i>
+                            <span>Your payment information is processed securely and never stored on our servers.</span>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="fas fa-lock me-1"></i> Pay Now
+                            </button>
+
+                            <a href="{% url 'guest_dashboard' %}" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-arrow-left me-1"></i> Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(function() {
+    const toggleBtn = document.getElementById('themeToggle');
+    const iconSun = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+    const root = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    applyTheme(initialTheme);
+
+    toggleBtn.addEventListener('click', function() {
+        const currentTheme = root.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            iconSun.style.display = 'block';
+            iconMoon.style.display = 'none';
+        } else {
+            root.removeAttribute('data-theme');
+            iconSun.style.display = 'none';
+            iconMoon.style.display = 'block';
+        }
+    }
+})();
+</script>
+
+</body>
+</html>
