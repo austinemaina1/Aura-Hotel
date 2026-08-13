@@ -21,18 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$)$!x5qr*-%zgsq=qj3w!cmcsvl=sfwri=3b9_dx%a9^^inz-a'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-import os
-
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'django-insecure-fallback-only-for-local-dev'
 )
 
-DEBUG = True
-
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     ".vercel.app",
@@ -78,10 +73,9 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-
 
 ROOT_URLCONF = 'hotelproject.urls'
 
@@ -106,12 +100,24 @@ WSGI_APPLICATION = 'hotelproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -171,12 +177,24 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # M-PESA SANDBOX SETTINGS
 # ==========================
 
-MPESA_CONSUMER_KEY = "4F3ETvhSLFv4vNQPIYbt4t5XZsZL03F4Z45CWoIslKy7HQDW"
+MPESA_CONSUMER_KEY = os.environ.get(
+    'MPESA_CONSUMER_KEY',
+    "4F3ETvhSLFv4vNQPIYbt4t5XZsZL03F4Z45CWoIslKy7HQDW"
+)
 
-MPESA_CONSUMER_SECRET = "N7hxXhCNCrGpTEEIZwuJHq61W30Ame2crAy3A6ez8tHckHE0R8VDIbIFeN1oaJH0"
+MPESA_CONSUMER_SECRET = os.environ.get(
+    'MPESA_CONSUMER_SECRET',
+    "N7hxXhCNCrGpTEEIZwuJHq61W30Ame2crAy3A6ez8tHckHE0R8VDIbIFeN1oaJH0"
+)
 
-MPESA_SHORTCODE = "174379"
+MPESA_SHORTCODE = os.environ.get('MPESA_SHORTCODE', "174379")
 
-MPESA_PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+MPESA_PASSKEY = os.environ.get(
+    'MPESA_PASSKEY',
+    "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+)
 
-MPESA_CALLBACK_URL = "https://your-domain.com/payments/mpesa/callback/"
+MPESA_CALLBACK_URL = os.environ.get(
+    'MPESA_CALLBACK_URL',
+    "https://your-domain.com/payments/mpesa/callback/"
+)
