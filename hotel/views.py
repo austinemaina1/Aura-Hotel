@@ -34,9 +34,6 @@ def rooms(request):
 from django.utils import timezone
 
 def reservation(request):
-    print("HOTEL RESERVATION VIEW LOADED")
-    print("USER:", request.user)
-    print("AUTH:", request.user.is_authenticated)
 
     if not request.user.is_authenticated:
         return redirect(
@@ -64,8 +61,6 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        print("USERNAME:", username)
-        print("PASSWORD ENTERED")
 
         user = authenticate(
             request,
@@ -73,7 +68,6 @@ def login_view(request):
             password=password
         )
 
-        print("AUTH RESULT:", user)
 
         if user is not None:
 
@@ -82,26 +76,21 @@ def login_view(request):
             if user.is_superuser:
                 return redirect('admin_dashboard')
 
-            elif user.username == 'receptionist':
+            elif user.groups.filter(name='Receptionist').exists():
                 return redirect('reception_dashboard')
 
-            elif user.groups.filter(
-                    name='Housekeeper'
-                ).exists():
-
-                    return redirect(
-                        'housekeeping_dashboard'
-                    )
-
-            elif user.username == 'staff':
-                return redirect('staff_dashboard')
+            elif user.groups.filter(name='Housekeeper').exists():
+                return redirect('housekeeping_dashboard')
 
             else:
                 return redirect('staff_dashboard')
 
         else:
 
-            print("LOGIN FAILED")
+            messages.error(
+                request,
+                "Invalid username or password."
+            )
 
     return render(
         request,
@@ -195,10 +184,6 @@ def check_availability(request):
 
         return redirect('home')
 
-    # Not a POST request (e.g. someone navigates here directly) -
-    # there's no form to show on this URL, so just send them home.
-    return redirect('home')
-
 
 from rooms.models import Room
 from reservations.models import Reservation
@@ -247,14 +232,13 @@ def admin_dashboard(request):
             1
         )
 
+    unread_notifications = Notification.objects.filter(
+        is_read=False
+    ).count()
 
-        unread_notifications = Notification.objects.filter(
-            is_read=False
-        ).count()
-
-        recent_notifications = Notification.objects.order_by(
-            '-created_at'
-        )[:5]
+    recent_notifications = Notification.objects.order_by(
+        '-created_at'
+    )[:5]
 
     # Reservations
     active_reservations = Reservation.objects.filter(
@@ -336,14 +320,8 @@ def admin_dashboard(request):
     else:
         occupancy_trend = 0
 
-    print("This Week Reservations:", this_week_reservations)
-    print("Last Week Reservations:", last_week_reservations)
 
-    print("This Week Revenue:", this_week_revenue)
-    print("Last Week Revenue:", last_week_revenue)
 
-    print("Current Occupancy:", current_occupancy)
-    print("Previous Occupancy:", previous_occupancy)
 
     # Events
     total_events = Event.objects.count()
@@ -669,5 +647,3 @@ def reception_dashboard(request):
         'reception_dashboard.html',
         context
     )
-
-
