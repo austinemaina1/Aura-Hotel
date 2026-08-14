@@ -23,7 +23,11 @@ from datetime import timedelta
 from django.shortcuts import render
 
 def home(request):
-    return render(request, 'index.html')
+    return render(
+        request,
+        'index.html',
+        {'today': timezone.localdate().isoformat()}
+    )
 
 def about(request):
     return render(request, 'about.html')

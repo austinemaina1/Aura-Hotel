@@ -189,6 +189,7 @@
 <input type="date"
        id="checkin_date"
        name="check_in"
+       min="{{ today }}"
        class="form-control"
        required>
             </div>
@@ -205,6 +206,7 @@
 <input type="date"
        id="checkout_date"
        name="check_out"
+       min="{{ today }}"
        class="form-control"
        required>
             </div>
@@ -808,6 +810,22 @@
 
       <p><em>&mdash; Trevor Mwangi, Eldoret</em></p>
     </div>
+        <!-- Testimonial 6
+        <div class="testimonial text-center slider-item">
+          <div class="author-image mb-3">
+            <img src="{% static 'images/person_3.jpg' %}" alt="Guest Review" class="rounded-circle mx-auto">
+          </div>
+
+          <blockquote>
+            <p>
+              &ldquo;I enjoyed the peaceful atmosphere, comfortable beds, and
+              exceptional hospitality. Aura Hotel is now my preferred hotel in Nairobi.&rdquo;
+            </p>
+          </blockquote>
+
+          <p><em>&mdash; Susan Achieng, Mombasa</em></p>
+        </div> -->
+
       </div>
       <!-- END slider -->
     </div>
@@ -1049,5 +1067,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endif %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var checkinInput = document.getElementById('checkin_date');
+    var checkoutInput = document.getElementById('checkout_date');
+
+    if (checkinInput && checkoutInput) {
+        checkinInput.addEventListener('change', function () {
+            if (checkinInput.value) {
+                var nextDay = new Date(checkinInput.value);
+                nextDay.setDate(nextDay.getDate() + 1);
+                var minCheckout = nextDay.toISOString().split('T')[0];
+                checkoutInput.min = minCheckout;
+
+                if (checkoutInput.value && checkoutInput.value <= checkinInput.value) {
+                    checkoutInput.value = minCheckout;
+                }
+            }
+        });
+    }
+});
+</script>
   </body>
 </html>
