@@ -1451,3 +1451,24 @@ textarea.form-control {
     }
 
 }
+
+/* Ensure header-contact hides cleanly on smaller screens */
+@media (max-width: 991px) {
+  .header-contact {
+    display: none !important;
+  }
+}
+
+/* Ensure hamburger toggle icon sits neatly on the right on mobile */
+.site-menu-toggle {
+  cursor: pointer;
+  z-index: 99;
+  position: relative;
+  display: block;
+}
+
+/* Maintain container flexbox bounds */
+.site-header .row {
+  width: 100%;
+  margin: 0;
+}

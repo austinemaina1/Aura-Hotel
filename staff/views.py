@@ -3,6 +3,7 @@ from .models import Staff
 from .forms import StaffForm
 from django.shortcuts import render
 from .models import Staff
+from django.contrib.auth.decorators import login_required
 
 def staff_list(request):
 
@@ -83,6 +84,7 @@ def delete_staff(request, id):
         {'staff': staff}
     )
 
+@login_required
 def staff_dashboard(request):
 
     total_staff = Staff.objects.count()
@@ -119,4 +121,3 @@ def staff_dashboard(request):
         'staff_dashboard.html',
         context
     )
-

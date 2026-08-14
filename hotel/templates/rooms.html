@@ -154,31 +154,47 @@
 </section>
 <!-- END section -->
 
-  <section class="section pb-4">
+<section class="section pb-4">
   <div class="container">
 
     <div class="row check-availabilty" id="next">
       <div class="block-32" data-aos="fade-up" data-aos-offset="-200">
 
-        <form action="{% url 'reservation' %}">
+        <form action="{% url 'reservation' %}" method="GET">
           <div class="row">
 
-            <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+            <!-- Check In -->
+            <div class="col-md-6 mb-3 mb-lg-0 col-lg-2">
               <label for="checkin_date" class="font-weight-bold text-black">Check In</label>
               <div class="field-icon-wrap">
                 <div class="icon"><span class="icon-calendar"></span></div>
-                <input type="text" id="checkin_date" class="form-control">
+                <input type="text" id="checkin_date" name="checkin_date" class="form-control" autocomplete="off" placeholder="Select Date" required>
               </div>
             </div>
 
-            <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+            <!-- Check Out -->
+            <div class="col-md-6 mb-3 mb-lg-0 col-lg-2">
               <label for="checkout_date" class="font-weight-bold text-black">Check Out</label>
               <div class="field-icon-wrap">
                 <div class="icon"><span class="icon-calendar"></span></div>
-                <input type="text" id="checkout_date" class="form-control">
+                <input type="text" id="checkout_date" name="checkout_date" class="form-control" autocomplete="off" placeholder="Select Date" required>
               </div>
             </div>
 
+            <!-- Room Type -->
+            <div class="col-md-6 mb-3 mb-lg-0 col-lg-3">
+              <label for="room_type" class="font-weight-bold text-black">Room Type</label>
+              <div class="field-icon-wrap">
+                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                <select id="room_type" name="room_type" class="form-control">
+                  <option value="deluxe">Deluxe Room</option>
+                  <option value="family_suite">Family Suite</option>
+                  <option value="executive">Executive Room</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Guests (Adults & Children) -->
             <div class="col-md-6 mb-3 mb-md-0 col-lg-3">
               <div class="row">
 
@@ -186,11 +202,11 @@
                   <label for="adults" class="font-weight-bold text-black">Adults</label>
                   <div class="field-icon-wrap">
                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select id="adults" class="form-control">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4+</option>
+                    <select id="adults" name="adults" class="form-control">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
                     </select>
                   </div>
                 </div>
@@ -199,11 +215,11 @@
                   <label for="children" class="font-weight-bold text-black">Children</label>
                   <div class="field-icon-wrap">
                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select id="children" class="form-control">
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3+</option>
+                    <select id="children" name="children" class="form-control">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3+">3+</option>
                     </select>
                   </div>
                 </div>
@@ -211,11 +227,12 @@
               </div>
             </div>
 
-            <div class="col-md-6 col-lg-3 align-self-end">
-              <button class="btn btn-primary btn-block text-white">
-                Check Availability
-              </button>
-            </div>
+            <!-- Submit Button -->
+        <div class="col-md-6 col-lg-2 align-self-end mt-3 mt-lg-0">
+          <button type="submit" class="btn btn-primary btn-block text-white px-2 text-nowrap" style="font-size: 0.9rem;">
+            Check Availability
+          </button>
+        </div>
 
           </div>
         </form>
@@ -292,7 +309,6 @@
           </div>
         </a>
       </div>
-
       <!-- Pool View Suite -->
       <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
         <a href="{% url 'reservation' %}" class="room">
@@ -514,6 +530,38 @@
 <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
 
 <script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  $(document).ready(function () {
+    var today = new Date();
+
+    // 1. Initialize Check-In Datepicker
+    $('#checkin_date').datepicker({
+      format: 'mm/dd/yyyy',
+      autoclose: true,
+      startDate: today,         // Blocks selection of any past dates
+      todayHighlight: true
+    }).on('changeDate', function (e) {
+      // 2. Lock Check-Out so it cannot be before Check-In
+      var selectedCheckIn = e.date;
+      $('#checkout_date').datepicker('setStartDate', selectedCheckIn);
+
+      // Reset Check-Out if it was set before the new Check-In
+      var currentCheckOut = $('#checkout_date').datepicker('getDate');
+      if (currentCheckOut && currentCheckOut < selectedCheckIn) {
+        $('#checkout_date').datepicker('setDate', selectedCheckIn);
+      }
+    });
+
+    // 3. Initialize Check-Out Datepicker
+    $('#checkout_date').datepicker({
+      format: 'mm/dd/yyyy',
+      autoclose: true,
+      startDate: today,         // Blocks selection of any past dates
+      todayHighlight: true
+    });
+  });
+</script>
 
 </body>
 </html>
