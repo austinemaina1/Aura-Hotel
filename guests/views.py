@@ -210,7 +210,19 @@ def cancel_reservation(request, reservation_id):
             'my_reservations'
         )
 
-    reservation.delete()
+    if reservation.status == 'Cancelled':
+
+        messages.error(
+            request,
+            "This reservation is already cancelled."
+        )
+
+        return redirect(
+            'my_reservations'
+        )
+
+    reservation.status = 'Cancelled'
+    reservation.save()
 
     messages.success(
         request,

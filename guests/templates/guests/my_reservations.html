@@ -475,7 +475,13 @@ body{
 
                                 <td>
 
-                                    {% if reservation.check_in > today %}
+                                    {% if reservation.status == 'Cancelled' %}
+
+                                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger">
+                                            <i class="fas fa-xmark me-1"></i> Cancelled
+                                        </span>
+
+                                    {% elif reservation.check_in > today %}
 
                                         <span class="badge bg-success bg-opacity-25 text-success border border-success">
                                             <i class="fas fa-circle-check me-1"></i> Upcoming
@@ -493,7 +499,7 @@ body{
 
                                 <td class="text-end">
 
-                                    {% if reservation.check_in > today %}
+                                    {% if reservation.check_in > today and reservation.status != 'Cancelled' %}
 
                                         <button
                                             class="btn btn-sm btn-outline-danger"
@@ -516,7 +522,7 @@ body{
 
                             </tr>
 
-                            {% if reservation.check_in > today %}
+                            {% if reservation.check_in > today and reservation.status != 'Cancelled' %}
 
                                 <div class="modal fade" id="cancelModal{{ reservation.id }}" tabindex="-1">
 
